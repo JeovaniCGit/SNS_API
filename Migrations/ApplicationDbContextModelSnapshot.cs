@@ -149,7 +149,7 @@ namespace SNS.Migrations
                         .HasColumnType("int")
                         .HasColumnName("nMedico");
 
-                    b.Property<int>("Utilizadorid")
+                    b.Property<int?>("Utilizadorid")
                         .HasColumnType("int");
 
                     b.HasKey("Id")
@@ -249,9 +249,15 @@ namespace SNS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("DataApagado")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DataNascimento")
                         .HasColumnType("datetime")
                         .HasColumnName("dataNascimento");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Morada")
                         .HasMaxLength(255)
@@ -358,7 +364,6 @@ namespace SNS.Migrations
                     b.HasOne("SNS.Models.Utilizador", "Utilizador")
                         .WithMany("Medicos")
                         .HasForeignKey("Utilizadorid")
-                        .IsRequired()
                         .HasConstraintName("FKMedico808163");
 
                     b.Navigation("Especialidade");

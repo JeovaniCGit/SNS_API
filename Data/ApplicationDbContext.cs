@@ -157,6 +157,7 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<Utilizador>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Utilizad__3213E83F4B2A429E");
+            entity.HasQueryFilter(e => e.IsActive);
 
             entity.ToTable("Utilizador");
 

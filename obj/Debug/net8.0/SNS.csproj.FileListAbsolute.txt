@@ -171,3 +171,4 @@ C:\Users\Marta\source\repos\SNS\obj\Debug\net8.0\refint\SNS.dll
 C:\Users\Marta\source\repos\SNS\obj\Debug\net8.0\SNS.pdb
 C:\Users\Marta\source\repos\SNS\obj\Debug\net8.0\SNS.genruntimeconfig.cache
 C:\Users\Marta\source\repos\SNS\obj\Debug\net8.0\ref\SNS.dll
+C:\Users\Marta\source\repos\SNS\obj\Debug\net8.0\SNS.sourcelink.json

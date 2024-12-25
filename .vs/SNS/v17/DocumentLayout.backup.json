@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Marta\\source\\repos\\SNS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|c:\\users\\marta\\source\\repos\\sns\\models\\baixamedica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|solutionrelative:models\\baixamedica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|c:\\users\\marta\\source\\repos\\sns\\services\\baixamedicaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|solutionrelative:services\\baixamedicaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|c:\\users\\marta\\source\\repos\\sns\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88EC2607-67F9-4D05-8777-C97D007CA2E6}|SNS.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 216,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,28 +22,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BaixaMedicaService.cs",
-              "DocumentMoniker": "C:\\Users\\Marta\\source\\repos\\SNS\\Services\\BaixaMedicaService.cs",
-              "RelativeDocumentMoniker": "Services\\BaixaMedicaService.cs",
-              "ToolTip": "C:\\Users\\Marta\\source\\repos\\SNS\\Services\\BaixaMedicaService.cs",
-              "RelativeToolTip": "Services\\BaixaMedicaService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-12T22:38:38.042Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BaixaMedica.cs",
-              "DocumentMoniker": "C:\\Users\\Marta\\source\\repos\\SNS\\Models\\BaixaMedica.cs",
-              "RelativeDocumentMoniker": "Models\\BaixaMedica.cs",
-              "ToolTip": "C:\\Users\\Marta\\source\\repos\\SNS\\Models\\BaixaMedica.cs",
-              "RelativeToolTip": "Models\\BaixaMedica.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Marta\\source\\repos\\SNS\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Marta\\source\\repos\\SNS\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAJIAAAAAAAAAAADwv6YAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-12T22:07:54.1Z",
+              "WhenOpened": "2024-12-25T17:12:34.434Z",
               "EditorCaption": ""
             }
           ]

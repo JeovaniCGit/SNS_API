@@ -65,12 +65,11 @@ namespace SNS.Services
         public async Task<Result<bool>> DeleteUserAsync(int id)
         {
             var userToDelete = await _context.Utilizadores.FindAsync(id);
-            if (userToDelete == null)
-            {
-                return Result<bool>.NaoApagado();
-            }
-
-            _context.Utilizadores.Remove(userToDelete);
+            
+            if (userToDelete == null) return Result<bool>.NaoApagado();
+            
+            userToDelete.IsActive = false;
+            userToDelete.DataApagado = DateTime.Now;
             await _context.SaveChangesAsync();
             return Result<bool>.IsDeleted();
         }
@@ -78,7 +77,7 @@ namespace SNS.Services
         {
             var userToUpdate = await _context.Utilizadores.FindAsync(id);
 
-            if (userToUpdate == null)
+            if (userToUpdate == null || !userToUpdate.IsActive)
             {
                 return Result<Utilizador?>.NaoEncontrado();
             }

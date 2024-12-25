@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SNS.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class ResetDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,9 @@ namespace SNS.Migrations
                     numeroCC = table.Column<int>(type: "int", nullable: true),
                     sexo = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     morada = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    TipoDeUtilizadorid = table.Column<int>(type: "int", nullable: false)
+                    TipoDeUtilizadorid = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DataApagado = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,7 +102,7 @@ namespace SNS.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nMedico = table.Column<int>(type: "int", nullable: true),
-                    Utilizadorid = table.Column<int>(type: "int", nullable: false),
+                    Utilizadorid = table.Column<int>(type: "int", nullable: true),
                     Especialidadeid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -170,6 +172,9 @@ namespace SNS.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Diagnostico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PeriodoDeIncapacidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Recomendacoes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MedicoId = table.Column<int>(type: "int", nullable: false),
                     PacienteId = table.Column<int>(type: "int", nullable: false),
                     tipoDeSetorId = table.Column<int>(type: "int", nullable: false)
