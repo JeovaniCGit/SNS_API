@@ -23,6 +23,7 @@ namespace SNS.Controllers
         [HttpPost("CreateBaixaMedica")]
         public async Task<IActionResult> CreateBaixaMedica([FromBody] BaixaMedicaCreateDTO baixa)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await _baixaMedicaService.CreateBaixaMedicaAsync(baixa);
             if(result.IsSuccess == false) return BadRequest(result.Message);
             return CreatedAtAction(nameof(GetBaixaMedicaById), new {id = result.Data!.Id}, result);
@@ -67,6 +68,7 @@ namespace SNS.Controllers
         [HttpPut("UpdateBaixa/{id}")]
         public async Task<IActionResult> UpdateBaixaMedicaAsync([FromRoute] int id, [FromBody] BaixaMedicaUpdateDTO baixaAtualizada)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id <= 0) return BadRequest("Id inválido.");
             var result = await _baixaMedicaService.UpdateBaixaMedicaAsync(id, baixaAtualizada);
             if (result.IsSuccess == false) return NotFound(result.Message);

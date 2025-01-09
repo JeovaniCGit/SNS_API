@@ -33,6 +33,12 @@ namespace SNS.Services
             };
             await _context.AddAsync(baixaParaCriar);
             await _context.SaveChangesAsync();
+
+            var fromMedico = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == baixaParaCriar.MedicoId);
+            var toPaciente = await _context.Pacientes.FirstOrDefaultAsync(paciente => paciente.Id == baixaParaCriar.PacienteId);
+            if (fromMedico == null || toPaciente == null) return Result<BaixaMedica>.ErroNoPedido();
+            fromMedico.BaixasMedicas.Add(baixaParaCriar);
+            toPaciente.BaixasMedicas.Add(baixaParaCriar);
             return Result<BaixaMedica>.IsValid(baixaParaCriar);
         }
         public async Task<Result<bool>> DeleteBaixaMedicaAsync(int baixaMedicaId)
@@ -67,7 +73,10 @@ namespace SNS.Services
         }
         public async Task<Result<BaixaMedica?>> UpdateBaixaMedicaAsync(int id, BaixaMedicaUpdateDTO baixaAtualizada)
         {
-            var baixaParaAtualizar = await _context.BaixasMedicas.FirstOrDefaultAsync(baixa => baixa.Id == id);
+            var baixaParaAtualizar = await _context.BaixasMedicas
+                .Include(e => e.Medico)
+                .Include(f => f.Paciente)
+                .FirstOrDefaultAsync(baixa => baixa.Id == id);
             if (baixaParaAtualizar == null) return Result<BaixaMedica?>.NaoEncontrado();
             baixaParaAtualizar.DataAtualizacao = DateTime.Now;
             baixaParaAtualizar.Diagnostico = baixaAtualizada.Diagnostico;

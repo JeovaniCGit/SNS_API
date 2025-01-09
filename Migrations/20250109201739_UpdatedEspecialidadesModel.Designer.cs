@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SNS.Data;
 
@@ -11,9 +12,11 @@ using SNS.Data;
 namespace SNS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250109201739_UpdatedEspecialidadesModel")]
+    partial class UpdatedEspecialidadesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,13 +340,15 @@ namespace SNS.Migrations
                         .IsRequired()
                         .HasConstraintName("FKHistorico_735488");
 
-                    b.HasOne("SNS.Models.Medico", null)
+                    b.HasOne("SNS.Models.Medico", "Medico")
                         .WithMany("HistoricoLaborals")
                         .HasForeignKey("Medicoid")
                         .IsRequired()
                         .HasConstraintName("FKHistorico_875756");
 
                     b.Navigation("Instituição");
+
+                    b.Navigation("Medico");
                 });
 
             modelBuilder.Entity("SNS.Models.Instituição", b =>

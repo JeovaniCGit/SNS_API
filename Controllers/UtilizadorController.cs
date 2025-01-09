@@ -22,6 +22,7 @@ namespace SNS.Controllers
         [HttpPost("AddUser")]
         public async Task<IActionResult> AddUserAsync([FromBody] UtilizadorRegistrationDTO userDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var result = await _utilizadorService.AddUserAsync(userDto);
             if (result.IsSuccess == false) return BadRequest(result.Message);
             return CreatedAtAction(nameof(GetUserById), new { id = result.Data!.Id }, result);
@@ -39,7 +40,7 @@ namespace SNS.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers( int pageNumber, int pageSize)
         {
-            List<Utilizador> users = await _utilizadorService.GetAllUsersAsync(pageNumber, pageSize);
+            List<UtilizadorDTO> users = await _utilizadorService.GetAllUsersAsync(pageNumber, pageSize);
             if (users.Count == 0) return NotFound(users);
             if (pageSize <= 0 || pageSize <= 0) return BadRequest();
             return Ok(users);
@@ -48,9 +49,10 @@ namespace SNS.Controllers
         [HttpPut("UpdateUser_{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, UtilizadorUpdateDTO userDto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (id <= 0) return BadRequest("Id inválido");
             var result = await _utilizadorService.UpdateUserAsync(id, userDto);
-            if(result.IsSuccess) return Ok(result);
+            if(result.IsSuccess == true) return Ok(result);
             return NotFound(result.Message);
         }
 

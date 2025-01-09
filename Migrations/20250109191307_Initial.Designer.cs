@@ -12,8 +12,8 @@ using SNS.Data;
 namespace SNS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241225171148_ResetDatabase")]
-    partial class ResetDatabase
+    [Migration("20250109191307_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,9 @@ namespace SNS.Migrations
                     b.Property<DateTime?>("DataInicio")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("Id")
+                        .HasColumnType("int");
+
                     b.HasKey("Instituiçãoid", "Medicoid")
                         .HasName("PK__Historic__6E11538B37C7ADFC");
 
@@ -148,11 +151,11 @@ namespace SNS.Migrations
                     b.Property<int>("Especialidadeid")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NMedico")
+                    b.Property<int>("NMedico")
                         .HasColumnType("int")
                         .HasColumnName("nMedico");
 
-                    b.Property<int?>("Utilizadorid")
+                    b.Property<int>("Utilizadorid")
                         .HasColumnType("int");
 
                     b.HasKey("Id")
@@ -255,7 +258,7 @@ namespace SNS.Migrations
                     b.Property<DateTime?>("DataApagado")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataNascimento")
+                    b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime")
                         .HasColumnName("dataNascimento");
 
@@ -263,26 +266,29 @@ namespace SNS.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Morada")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
                         .HasColumnName("morada");
 
-                    b.Property<int?>("NTelefone")
+                    b.Property<int>("NTelefone")
                         .HasColumnType("int")
                         .HasColumnName("nTelefone");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
                         .HasColumnName("nome");
 
-                    b.Property<int?>("NumeroCc")
+                    b.Property<int>("NumeroCc")
                         .HasColumnType("int")
                         .HasColumnName("numeroCC");
 
                     b.Property<string>("Sexo")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
@@ -329,7 +335,7 @@ namespace SNS.Migrations
             modelBuilder.Entity("SNS.Models.HistoricoLaboral", b =>
                 {
                     b.HasOne("SNS.Models.Instituição", "Instituição")
-                        .WithMany("HistoricoLaborals")
+                        .WithMany()
                         .HasForeignKey("Instituiçãoid")
                         .IsRequired()
                         .HasConstraintName("FKHistorico_735488");
@@ -364,25 +370,22 @@ namespace SNS.Migrations
                         .IsRequired()
                         .HasConstraintName("FKMedico588860");
 
-                    b.HasOne("SNS.Models.Utilizador", "Utilizador")
+                    b.HasOne("SNS.Models.Utilizador", null)
                         .WithMany("Medicos")
                         .HasForeignKey("Utilizadorid")
+                        .IsRequired()
                         .HasConstraintName("FKMedico808163");
 
                     b.Navigation("Especialidade");
-
-                    b.Navigation("Utilizador");
                 });
 
             modelBuilder.Entity("SNS.Models.Paciente", b =>
                 {
-                    b.HasOne("SNS.Models.Utilizador", "Utilizador")
+                    b.HasOne("SNS.Models.Utilizador", null)
                         .WithMany("Pacientes")
                         .HasForeignKey("Utilizadorid")
                         .IsRequired()
                         .HasConstraintName("FKPaciente149628");
-
-                    b.Navigation("Utilizador");
                 });
 
             modelBuilder.Entity("SNS.Models.Utilizador", b =>
@@ -399,11 +402,6 @@ namespace SNS.Migrations
             modelBuilder.Entity("SNS.Models.Especialidade", b =>
                 {
                     b.Navigation("Medicos");
-                });
-
-            modelBuilder.Entity("SNS.Models.Instituição", b =>
-                {
-                    b.Navigation("HistoricoLaborals");
                 });
 
             modelBuilder.Entity("SNS.Models.Medico", b =>

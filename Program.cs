@@ -26,6 +26,9 @@ namespace SNS
             builder.Services.AddScoped<IUtilizadorService, UtilizadorService>();
             builder.Services.AddScoped<IBaixaMedicaService, BaixaMedicaService>();
             builder.Services.AddScoped<IMedicoService, MedicoService>();
+            builder.Services.AddScoped<IPacienteService, PacienteService>();
+            builder.Services.AddScoped<IEspecialidadeService, EspecialidadeService>();
+
 
 
             var app = builder.Build();

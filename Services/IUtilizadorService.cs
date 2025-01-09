@@ -6,9 +6,9 @@ namespace SNS.Services
 {
     public interface IUtilizadorService
     {
-        Task<List<Utilizador>> GetAllUsersAsync(int pageNumber, int pageSize);
-        Task<Result<Utilizador?>> GetUserByIdAsync(int id);
-        Task<Result<Utilizador>> AddUserAsync(UtilizadorRegistrationDTO userDto);
+        Task<List<UtilizadorDTO>> GetAllUsersAsync(int pageNumber, int pageSize);
+        Task<Result<UtilizadorDTO?>> GetUserByIdAsync(int id);
+        Task<Result<UtilizadorDTO>> AddUserAsync(UtilizadorRegistrationDTO userDto);
         Task<Result<Utilizador?>> UpdateUserAsync(int id, UtilizadorUpdateDTO userDto);
         Task<Result<bool>> DeleteUserAsync(int id);
     }

@@ -197,6 +197,36 @@
         }
       }
     },
+    "/GetAllEspecialidades": {
+      "get": {
+        "tags": [
+          "Especialidade"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Medico/GetPacientesByNumeroSNS": {
       "get": {
         "tags": [
@@ -205,6 +235,132 @@
         "parameters": [
           {
             "name": "numeroSNS",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Medico/AddMedico": {
+      "post": {
+        "tags": [
+          "Medico"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMedicoWithIdDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMedicoWithIdDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMedicoWithIdDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Medico/{id}": {
+      "get": {
+        "tags": [
+          "Medico"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Medico/UpdateHistoricoMedico_{medicoId}": {
+      "put": {
+        "tags": [
+          "Medico"
+        ],
+        "parameters": [
+          {
+            "name": "medicoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoLaboralDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoLaboralDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HistoricoLaboralDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Medico/GetAllMedicos": {
+      "get": {
+        "tags": [
+          "Medico"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -371,10 +527,54 @@
   },
   "components": {
     "schemas": {
+      "AddAndGetMedicoDataDTO": {
+        "required": [
+          "especialidadeId",
+          "nMedico"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "medicoName": {
+            "type": "string",
+            "nullable": true
+          },
+          "nMedico": {
+            "pattern": "^\\d{9}$",
+            "type": "integer",
+            "format": "int32"
+          },
+          "especialidadeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "especialidade": {
+            "$ref": "#/components/schemas/Especialidade"
+          },
+          "allHistoricoLaboral": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoricoLaboral"
+            },
+            "nullable": true
+          },
+          "historicoLaboral": {
+            "$ref": "#/components/schemas/HistoricoLaboralDTO"
+          }
+        },
+        "additionalProperties": false
+      },
       "BaixaMedicaCreateDTO": {
         "required": [
           "diagnostico",
-          "periodoDeIncapacidade"
+          "medicoId",
+          "pacienteId",
+          "periodoDeIncapacidade",
+          "tipoDeSetorId"
         ],
         "type": "object",
         "properties": {
@@ -391,14 +591,18 @@
             "format": "int32"
           },
           "diagnostico": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 2000,
+            "minLength": 0,
+            "type": "string"
           },
           "periodoDeIncapacidade": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
           },
           "recomendacoes": {
+            "maxLength": 200,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }
@@ -413,28 +617,196 @@
         "type": "object",
         "properties": {
           "diagnostico": {
+            "maxLength": 2000,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "periodoDeIncapacidade": {
+            "maxLength": 50,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "recomendacoes": {
+            "maxLength": 200,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "UtilizadorRegistrationDTO": {
+      "CreateMedicoWithIdDTO": {
+        "required": [
+          "medicoDTO",
+          "medicoUtilizadorId"
+        ],
         "type": "object",
         "properties": {
-          "nome": {
+          "medicoUtilizadorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "medicoDTO": {
+            "$ref": "#/components/schemas/AddAndGetMedicoDataDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Especialidade": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "descri": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistoricoLaboral": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "instituiçãoid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "medicoid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataFim": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "instituição": {
+            "$ref": "#/components/schemas/Instituição"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistoricoLaboralDTO": {
+        "required": [
+          "dataFim",
+          "dataInicio",
+          "instituiçãoid"
+        ],
+        "type": "object",
+        "properties": {
+          "instituiçãoid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataFim": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Instituição": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "descri": {
             "type": "string",
             "nullable": true
           },
+          "tipoDeSetorid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tipoDeSetor": {
+            "$ref": "#/components/schemas/TipoDeSetor"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PacienteDTO": {
+        "type": "object",
+        "properties": {
+          "profissao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "entidadePatronal": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "numeroSns": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TipoDeSetor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "descri": {
+            "type": "string",
+            "nullable": true
+          },
+          "instituiçãos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Instituição"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UtilizadorRegistrationDTO": {
+        "required": [
+          "dataNascimento",
+          "morada",
+          "nome",
+          "nTelefone",
+          "numeroCc",
+          "sexo",
+          "tipoDeUtilizadorid"
+        ],
+        "type": "object",
+        "properties": {
+          "nome": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
           "nTelefone": {
+            "pattern": "^[2-9][0-9]{8}$",
             "type": "integer",
             "format": "int32"
           },
@@ -443,16 +815,32 @@
             "format": "date-time"
           },
           "numeroCc": {
+            "maximum": 999999999,
+            "minimum": 100000000,
             "type": "integer",
             "format": "int32"
           },
           "sexo": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "pattern": "^(Masculino|Feminino)$",
+            "type": "string"
           },
           "morada": {
-            "type": "string",
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string"
+          },
+          "tipoDeUtilizadorid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "medicoToAttributeId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
+          },
+          "pacienteData": {
+            "$ref": "#/components/schemas/PacienteDTO"
           }
         },
         "additionalProperties": false
@@ -461,18 +849,24 @@
         "type": "object",
         "properties": {
           "nome": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "nTelefone": {
+            "pattern": "^[2-9][0-9]{8}$",
             "type": "integer",
             "format": "int32"
           },
           "sexo": {
+            "pattern": "^(Masculino|Feminino)$",
             "type": "string",
             "nullable": true
           },
           "morada": {
+            "maxLength": 200,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }

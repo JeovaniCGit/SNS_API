@@ -23,6 +23,17 @@ namespace SNS.Utilities
             IsSuccess = false;
         }
 
+        private Result(bool resultado)
+        {
+            Data = default;
+            Message = null;
+            IsSuccess = true;
+        }
+
+        public static Result<T> IsValid()
+        {
+            return new Result<T>(true);
+        }
         public static Result<T> IsValid(T data)
         {
             return new Result<T>(data);
@@ -43,6 +54,11 @@ namespace SNS.Utilities
         public static Result<T> NaoEncontrado()
         {
             string message = $"O recurso procurado não foi encontrado.";
+            return new Result<T>(message);
+        }
+        public static Result<T> NaoEncontrado(string error)
+        {
+            string message = error;
             return new Result<T>(message);
         }
         public static Result<T> ErroInesperado()

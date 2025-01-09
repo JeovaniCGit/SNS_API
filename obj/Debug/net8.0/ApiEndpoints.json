@@ -123,6 +123,59 @@
   },
   {
     "ContainingType": "SNS.Controllers.MedicoController",
+    "Method": "GetMedicoById",
+    "RelativePath": "api/Medico/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SNS.Controllers.MedicoController",
+    "Method": "AddMedico",
+    "RelativePath": "api/Medico/AddMedico",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createMedicoDTO",
+        "Type": "SNS.DTOs.CreateMedicoWithIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SNS.Controllers.MedicoController",
+    "Method": "GetAllMedicos",
+    "RelativePath": "api/Medico/GetAllMedicos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SNS.Controllers.MedicoController",
     "Method": "GetPacienteByNumeroSNSAsync",
     "RelativePath": "api/Medico/GetPacientesByNumeroSNS",
     "HttpMethod": "GET",
@@ -133,6 +186,27 @@
         "Name": "numeroSNS",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SNS.Controllers.MedicoController",
+    "Method": "UpdateHistoricoLaboral",
+    "RelativePath": "api/Medico/UpdateHistoricoMedico_{medicoId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "medicoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "historicoDTO",
+        "Type": "SNS.DTOs.HistoricoLaboralDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -223,6 +297,27 @@
         "Name": "userDto",
         "Type": "SNS.DTOs.UtilizadorUpdateDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SNS.Controllers.EspecialidadeController",
+    "Method": "GetAllEspecialidades",
+    "RelativePath": "GetAllEspecialidades",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

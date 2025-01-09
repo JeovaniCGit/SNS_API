@@ -56,12 +56,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DataFim).HasColumnType("datetime");
             entity.Property(e => e.DataInicio).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Instituição).WithMany(p => p.HistoricoLaborals)
+            entity.HasOne(d => d.Instituição)
+                .WithMany()
                 .HasForeignKey(d => d.Instituiçãoid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKHistorico_735488");
 
-            entity.HasOne(d => d.Medico).WithMany(p => p.HistoricoLaborals)
+            entity.HasOne<Medico>()
+                .WithMany(p => p.HistoricoLaborals)
                 .HasForeignKey(d => d.Medicoid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKHistorico_875756");
@@ -94,12 +96,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.NMedico).HasColumnName("nMedico");
 
-            entity.HasOne(d => d.Especialidade).WithMany(p => p.Medicos)
+            entity.HasOne(d => d.Especialidade)
+                .WithMany()
                 .HasForeignKey(d => d.Especialidadeid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKMedico588860");
 
-            entity.HasOne(d => d.Utilizador).WithMany(p => p.Medicos)
+            entity.HasOne<Utilizador>()
+                .WithMany(p => p.Medicos)
                 .HasForeignKey(d => d.Utilizadorid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKMedico808163");
@@ -122,7 +126,8 @@ public partial class ApplicationDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("profissao");
 
-            entity.HasOne(d => d.Utilizador).WithMany(p => p.Pacientes)
+            entity.HasOne<Utilizador>()
+                .WithMany(p => p.Pacientes)
                 .HasForeignKey(d => d.Utilizadorid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKPaciente149628");

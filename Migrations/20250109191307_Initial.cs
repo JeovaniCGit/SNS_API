@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SNS.Migrations
 {
     /// <inheritdoc />
-    public partial class ResetDatabase : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,12 +75,12 @@ namespace SNS.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    nTelefone = table.Column<int>(type: "int", nullable: true),
-                    dataNascimento = table.Column<DateTime>(type: "datetime", nullable: true),
-                    numeroCC = table.Column<int>(type: "int", nullable: true),
-                    sexo = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    morada = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    nome = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
+                    nTelefone = table.Column<int>(type: "int", nullable: false),
+                    dataNascimento = table.Column<DateTime>(type: "datetime", nullable: false),
+                    numeroCC = table.Column<int>(type: "int", nullable: false),
+                    sexo = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
+                    morada = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
                     TipoDeUtilizadorid = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     DataApagado = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -101,8 +101,8 @@ namespace SNS.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nMedico = table.Column<int>(type: "int", nullable: true),
-                    Utilizadorid = table.Column<int>(type: "int", nullable: true),
+                    nMedico = table.Column<int>(type: "int", nullable: false),
+                    Utilizadorid = table.Column<int>(type: "int", nullable: false),
                     Especialidadeid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -147,6 +147,7 @@ namespace SNS.Migrations
                 {
                     Instituiçãoid = table.Column<int>(type: "int", nullable: false),
                     Medicoid = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: true),
                     DataInicio = table.Column<DateTime>(type: "datetime", nullable: true),
                     DataFim = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
