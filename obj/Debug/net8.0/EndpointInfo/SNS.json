@@ -227,6 +227,107 @@
         }
       }
     },
+    "/GetAllInstituicoes": {
+      "get": {
+        "tags": [
+          "Instituicao"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/CreateInstituicao": {
+      "post": {
+        "tags": [
+          "Instituicao"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Descri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maxLength": 40,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "TipoSetorId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TipoDeSetor.Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "TipoDeSetor.Descri",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "TipoDeSetor.Instituiçãos",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Instituição"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "get": {
+        "tags": [
+          "Instituicao"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Medico/GetPacientesByNumeroSNS": {
       "get": {
         "tags": [
@@ -367,6 +468,30 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/GetAllTiposSetor": {
+      "get": {
+        "tags": [
+          "TipoSetor"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/GetAllTiposUtilizador": {
+      "get": {
+        "tags": [
+          "TipoUtilizador"
         ],
         "responses": {
           "200": {

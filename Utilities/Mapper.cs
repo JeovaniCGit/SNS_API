@@ -44,13 +44,23 @@ namespace SNS.Utilities
             };
         }
 
-        public static HistoricoLaboralDTO MapperParaDTO(HistoricoLaboral historico)
+        public static HistoricoLaboralDTO MapperParaDTO (HistoricoLaboral historico)
         {
             return new HistoricoLaboralDTO
             {
                 Instituiçãoid = historico.Instituiçãoid,
                 DataInicio = historico.DataInicio,
                 DataFim = historico.DataFim
+            };
+        }
+
+        public static InstituicaoDTO MapperParaDTO (Instituição instituicao)
+        {
+            return new InstituicaoDTO
+            {
+                Id = instituicao.Id,
+                Descri = instituicao.Descri!,
+                TipoDeSetor = instituicao.TipoDeSetor,
             };
         }
     }
