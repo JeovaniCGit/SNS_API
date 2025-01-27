@@ -1,0 +1,45 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+  box-sizing: border-box;
+  padding-top: 100px;
+  height: 100vh;
+}
+
+
+#mainContainer {
+  min-width: 25%;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+  padding-bottom: 3em;
+}
+
+.formContainer {
+  width: 100%;
+  justify-items: center;
+}
+
+#userForm {
+  width: 40%;
+}
+
+#userFormDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+#userFormDiv div{
+  width: 100%;
+  font-size: 1.04rem;
+}
+
+#userFormDiv div input {
+  font-size: 1.04rem;
+}
+
+#userFormDiv div h4 {
+  margin: -.9em;
+  margin-bottom: .6em;
+}

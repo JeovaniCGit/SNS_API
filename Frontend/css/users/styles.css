@@ -1,0 +1,67 @@
+body {
+  box-sizing: border-box;
+  padding-top: 100px;
+  height: 100vh;
+  margin: 0;
+}
+
+.body {
+  overflow-y: scroll !important;
+  scrollbar-width: thin !important;
+}
+
+body::-webkit-scrollbar {
+  width: .8em;
+  background-color: gray;
+}
+body::-webkit-scrollbar-track {
+  background: gray;
+}
+
+.titleIndex {
+  border-bottom: .5px solid rgba(0, 150, 0, 0.4);
+}
+
+.cardBody {
+  overflow: hidden !important;
+  clip-path: inset(0px 0px 1.2em 0px);
+}
+
+.cardBorder:hover {
+  border: 1.5px solid rgba(0, 150, 0, 0.4) !important;
+  transition: linear !important;
+  transition-duration: 0.3s !important;
+  transform: scale(1.05);
+  overflow: hidden !important;
+}
+.baixaNotFound {
+  font-size: 1.2rem;
+  margin-left: 1em;
+  margin-top: 1.5em;
+  text-align: left;
+}
+.userDataDisplayDiv {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+.userDataDisplayDiv span, .profileDisplay span {
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+.contactosDisclaimer, .snsDisclaimer {
+  font-size: 1.2rem;
+}
+
+.profile-container, .profile-container input, .profileDisplay input {
+  font-size: 1.04rem;
+}
+
+.profile-container h3, .profileDisplay h3 {
+  margin: -.9em;
+  margin-bottom: .6em;
+}
+.profile-container div {
+  width: 100%;
+}
