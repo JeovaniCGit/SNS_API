@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNS Frontend</title>
+    <link href="/Frontend/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Frontend/css/users/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="min-height: 10vh; width: 100%;">
+        <div class="container-fluid mx-2">
+            <a class="navbar-brand" href="index.html">
+                <img src="/Frontend/assets/img/Símbolo_do_SNS.png" alt="Logo" width="200px" height="35px" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" style="gap: 1vw;">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="paciente_index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="perfil_paciente.html">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contactos.html">Contactos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Frontend/html/login_registo/login_paciente.html" class="btn btn-success">Log out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding: 5vh 1.5vw; min-width: 85%; width: 100%; margin-top: 10vh;">
+      <h2 class="mb-4" style="font-weight: 200;
+      text-decoration: underline 1px solid rgba(0, 150, 0, 0.4);">Sobre a aplicação SNS</h2>
+      <p class="snsDisclaimer mb-4">
+        Construída de acordo com o interesse do cidadão, a SNS24 reúne a informação de saúde do cidadão numa aplicação residente no seu computador, smartphone ou tablet.
+        Esta plataforma tem como objetivo facilitar o acesso e gestão dos dados de saúde de forma rápida e segura.
+        Através da aplicação, os utilizadores podem consultar e solicitar baixa médica, obter informações sobre médicos e hospitais, e muito mais.
+        A SNS24 está comprometida com a proteção da privacidade e segurança dos dados pessoais, em conformidade com as regulamentações em vigor.
+        Estamos sempre a trabalhar para melhorar a experiência do utilizador e garantir que a sua saúde está em boas mãos.
+      </p>
+      <p class="contactosDisclaimer">
+        Para qualquer emergência, por favor, contacte-nos através do número <strong style="text-decoration: underline;">808 242 424</strong>.
+        Este número está disponível 24 horas por dia, 7 dias por semana.
+        Certifique-se de fornecer informações completas e precisas.
+        Os serviços prestados estão sujeitos à disponibilidade e às condições da rede de saúde.
+        Para questões gerais, não hesite em entrar em contacto com a nossa equipa de apoio.
+      </p>
+    </main>
+    <script src="/Frontend/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Frontend/js/users.js"></script>
+</body>
+</html>
