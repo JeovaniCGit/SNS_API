@@ -7,7 +7,7 @@ namespace SNS.DTOs
     {
         public int Id { get; set; }
         public required string Nome { get; set; }
-        //public string PasswordHash { get; set; }
+        public required string Password { get; set; }
         public required int NTelefone { get; set; }
         public required DateTime DataNascimento { get; set; }
         public required int NumeroCc { get; set; }

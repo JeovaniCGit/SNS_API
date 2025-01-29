@@ -76,5 +76,10 @@ namespace SNS.Utilities
             string message = $"Valor duplicado, o recurso já existe.";
             return new Result<T>(message);
         }
+        public static Result<T> PasswordErrada()
+        {
+            string message = "Password errada";
+            return new Result<T>(message);
+        }
     }
  }

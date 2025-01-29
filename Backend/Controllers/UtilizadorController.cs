@@ -28,6 +28,21 @@ namespace SNS.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = result.Data!.Id }, result);
         }
 
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] UtilizadorLoginDTO loginDto)
+        {
+            var resultado = await _utilizadorService.LoginAsync(loginDto.Nome, loginDto.Password);
+
+            if (resultado.IsSuccess)
+            {
+                return Ok(resultado.Data);
+            }
+            else
+            {
+                return Unauthorized(resultado.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {

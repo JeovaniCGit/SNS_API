@@ -24,6 +24,7 @@ namespace SNS.Utilities
             return new UtilizadorDTO
             {
                 Nome = utilizador.Nome,
+                Password = utilizador.Password,
                 NTelefone = utilizador.NTelefone,
                 DataNascimento = utilizador.DataNascimento,
                 NumeroCc = utilizador.NumeroCc,
