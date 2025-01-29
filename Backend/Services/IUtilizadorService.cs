@@ -1,4 +1,5 @@
-﻿using SNS.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using SNS.DTOs;
 using SNS.Models;
 using SNS.Utilities;
 
@@ -11,5 +12,6 @@ namespace SNS.Services
         Task<Result<UtilizadorDTO>> AddUserAsync(UtilizadorRegistrationDTO userDto);
         Task<Result<Utilizador?>> UpdateUserAsync(int id, UtilizadorUpdateDTO userDto);
         Task<Result<bool>> DeleteUserAsync(int id);
+        Task<Result<UtilizadorDTO>> LoginAsync(string nome, string password);
     }
 }

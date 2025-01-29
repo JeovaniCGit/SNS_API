@@ -6,7 +6,7 @@ namespace SNS.Models;
 public class Utilizador
 {
     public int Id { get; set; }
-    //public required string PasswordHash { get; set; }
+    public string Password { get; set; }
     public required string Nome { get; set; }
     public required int NTelefone { get; set; }
     public required DateTime DataNascimento { get; set; }

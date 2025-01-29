@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SNS.Data;
 using SNS.DTOs;
@@ -12,12 +13,14 @@ namespace SNS.Services
         private readonly ApplicationDbContext _context;
         private readonly IMedicoService _medicoService;
         private readonly IPacienteService _pacienteService;
+        private readonly PasswordHasher<Utilizador> _passwordHasher;
 
         public UtilizadorService(ApplicationDbContext context, IMedicoService medicoService, IPacienteService pacienteService)
         {
             _context = context;
             _medicoService = medicoService;
             _pacienteService = pacienteService;
+            _passwordHasher = new PasswordHasher<Utilizador>();
         }
 
         public async Task<List<UtilizadorDTO>> GetAllUsersAsync(int pageNumber, int pageSize)
@@ -32,6 +35,7 @@ namespace SNS.Services
                 {
                     Id = u.Id,
                     Nome = u.Nome,
+                    Password = u.Password,
                     NTelefone = u.NTelefone,
                     DataNascimento = u.DataNascimento,
                     NumeroCc = u.NumeroCc,
@@ -50,6 +54,7 @@ namespace SNS.Services
                 {
                     Id = u.Id,
                     Nome = u.Nome,
+                    Password = u.Password,
                     NTelefone = u.NTelefone,
                     DataNascimento = u.DataNascimento,
                     NumeroCc = u.NumeroCc,
@@ -71,6 +76,10 @@ namespace SNS.Services
 
             Utilizador utilizador = Mapper.MapperParaEntity(userDto);
 
+            var passwordHasher = new PasswordHasher<Utilizador>();
+            var hashedPassword = passwordHasher.HashPassword(utilizador, userDto.Password);
+            utilizador.Password = hashedPassword;
+
             if (userDto.MedicoToAttributeId > 0)
             {
                 var medicoToAttribute = await _medicoService.ValidateMedicoForUserRegistration(userDto);
@@ -86,10 +95,44 @@ namespace SNS.Services
                 if (pacienteData.IsSuccess == false) return Result<UtilizadorDTO>.ValorDuplicado();
                 utilizador.Pacientes.Add(pacienteData.Data!);
             }
+
+            var uti = new Utilizador
+            {
+                Nome = utilizador.Nome,
+                Password = utilizador.Password,
+                NTelefone = utilizador.NTelefone,
+                DataNascimento = utilizador.DataNascimento,
+                NumeroCc = utilizador.NumeroCc,
+                Sexo = utilizador.Sexo,
+                Morada = utilizador.Morada,
+                TipoDeUtilizadorid = utilizador.TipoDeUtilizadorid
+            };
+
             await _context.Utilizadores.AddAsync(utilizador);
             await _context.SaveChangesAsync();
             return Result<UtilizadorDTO>.IsValid(Mapper.MapperParaDTO(utilizador));
         }
+
+        public async Task<Result<UtilizadorDTO>> LoginAsync(string nome, string password)
+        {
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Nome == nome);
+            if (utilizador == null)
+            {
+                return Result<UtilizadorDTO>.NaoEncontrado("Utilizador não encontrado");
+            }
+
+            var result = _passwordHasher.VerifyHashedPassword(utilizador, utilizador.Password, password);
+
+            if (result == PasswordVerificationResult.Success)
+            {
+                return Result<UtilizadorDTO>.IsValid(Mapper.MapperParaDTO(utilizador));
+            }
+            else
+            {
+                return Result<UtilizadorDTO>.PasswordErrada();
+            }
+        }
+
         public async Task<Result<bool>> DeleteUserAsync(int id)
         {
             var userToDelete = await _context.Utilizadores.FindAsync(id);

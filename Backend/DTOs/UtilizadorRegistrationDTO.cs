@@ -8,6 +8,9 @@ namespace SNS.DTOs
         [StringLength(100, ErrorMessage = "O nome não pode ter mais de 100 caracteres")]
         public required string Nome { get; set; }
 
+        [Required(ErrorMessage = "A password é obrigatória")]
+        public required string Password { get; set; }
+
         [Required(ErrorMessage = "O numero de telefone é obrigatório.")]
         [RegularExpression(@"^[2-9][0-9]{8}$", ErrorMessage = "Número de telefone inválido.")]
         public required int NTelefone { get; set; }
