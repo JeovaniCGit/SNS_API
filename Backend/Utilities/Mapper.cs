@@ -23,15 +23,27 @@ namespace SNS.Utilities
         {
             return new UtilizadorDTO
             {
+                Id = utilizador.Id,
                 Nome = utilizador.Nome,
-                Password = utilizador.Password,
                 NTelefone = utilizador.NTelefone,
                 DataNascimento = utilizador.DataNascimento,
                 NumeroCc = utilizador.NumeroCc,
                 Sexo = utilizador.Sexo,
-                Morada = utilizador.Morada,
-                Medicos = utilizador.Medicos,
-                Pacientes = utilizador.Pacientes
+                Morada = utilizador.Morada
+            };
+        }
+
+        public static UtilizadorResponseDTO MapperParaDTOResponseMedicoPaciente (Utilizador utilizador)
+        {
+            return new UtilizadorResponseDTO
+            {
+                Id = utilizador.Id,
+                Nome = utilizador.Nome,
+                NTelefone = utilizador.NTelefone,
+                DataNascimento = utilizador.DataNascimento,
+                NumeroCc = utilizador.NumeroCc,
+                Sexo = utilizador.Sexo,
+                Morada = utilizador.Morada
             };
         }
 
@@ -62,6 +74,38 @@ namespace SNS.Utilities
                 Id = instituicao.Id,
                 Descri = instituicao.Descri!,
                 TipoDeSetor = instituicao.TipoDeSetor,
+            };
+        }
+
+        public static Paciente MapperParaEntity (CreatePacienteDTO pacienteDTO, Utilizador user)
+        {
+            return new Paciente
+            {
+                Profissao = pacienteDTO.Profissao,
+                EntidadePatronal = pacienteDTO.EntidadePatronal,
+                NumeroSns = pacienteDTO.NumeroSns,
+                Utilizador = user
+            };
+        }
+
+        public static GetPacienteDTO MapperParaDTO(Paciente paciente)
+        {
+            return new GetPacienteDTO
+            {
+                Id = paciente.Id,
+                Profissao = paciente.Profissao,
+                EntidadePatronal = paciente.EntidadePatronal,
+                NumeroSns = paciente.NumeroSns,
+            };
+        }
+
+        public static GetMedicoDataDTO MapperParaDTO (Medico medico)
+        {
+            return new GetMedicoDataDTO
+            {
+                Id = medico.Id,
+                EspecialidadeId = medico.Especialidadeid,
+                AllHistoricoLaboral = medico.HistoricoLaborals,
             };
         }
     }

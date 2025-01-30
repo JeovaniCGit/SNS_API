@@ -2,7 +2,7 @@
 using SNS.Utilities;
 using SNS.DTOs;
 
-namespace SNS.Services
+namespace SNS.Interfaces
 {
     public interface IInstituicaoService
     {

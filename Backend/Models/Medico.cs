@@ -10,7 +10,9 @@ public class Medico
     public int NMedico { get; set; }
     public int Utilizadorid { get; set; }
     public int Especialidadeid { get; set; }
+    public Utilizador? Utilizador { get; set; }
     public virtual Especialidade Especialidade { get; set; } = null!;
+    public bool IsActive { get; set; } = true;
     public virtual ICollection<HistoricoLaboral> HistoricoLaborals { get; set; } = new List<HistoricoLaboral>();
     public virtual ICollection<BaixaMedica> BaixasMedicas { get; set; } = new List<BaixaMedica>();
 }

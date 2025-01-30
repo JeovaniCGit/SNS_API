@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SNS.Data;
 using SNS.DTOs;
+using SNS.Interfaces;
 using SNS.Models;
-using SNS.Services;
 using SNS.Utilities;
 
 namespace SNS.Controllers

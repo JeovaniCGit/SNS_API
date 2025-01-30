@@ -1,6 +1,6 @@
 ﻿using SNS.Models;
 
-namespace SNS.Services
+namespace SNS.Interfaces
 {
     public interface ITipoUtilizadorService
     {

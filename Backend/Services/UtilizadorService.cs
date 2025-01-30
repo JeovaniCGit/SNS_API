@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SNS.Data;
 using SNS.DTOs;
+using SNS.Interfaces;
 using SNS.Models;
 using SNS.Utilities;
 
@@ -11,63 +12,54 @@ namespace SNS.Services
     public class UtilizadorService : IUtilizadorService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMedicoService _medicoService;
         private readonly IPacienteService _pacienteService;
         private readonly PasswordHasher<Utilizador> _passwordHasher;
 
-        public UtilizadorService(ApplicationDbContext context, IMedicoService medicoService, IPacienteService pacienteService)
+        public UtilizadorService(ApplicationDbContext context, IPacienteService pacienteService)
         {
             _context = context;
-            _medicoService = medicoService;
             _pacienteService = pacienteService;
             _passwordHasher = new PasswordHasher<Utilizador>();
         }
 
-        public async Task<List<UtilizadorDTO>> GetAllUsersAsync(int pageNumber, int pageSize)
+        public async Task<List<UtilizadorResponseDTO>> GetAllUsersAsync(int pageNumber, int pageSize)
         {
-            if(pageNumber <= 0 || pageSize <= 0) return new List<UtilizadorDTO>();
+            if(pageNumber <= 0 || pageSize <= 0) return new List<UtilizadorResponseDTO>();
             var totalCount = await _context.Utilizadores.CountAsync();
-            if (totalCount == 0) return new List<UtilizadorDTO>();
+            if (totalCount == 0) return new List<UtilizadorResponseDTO>();
             var users = await _context.Utilizadores
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(u => new UtilizadorDTO
+                .Select(u => new UtilizadorResponseDTO
                 {
                     Id = u.Id,
                     Nome = u.Nome,
-                    Password = u.Password,
                     NTelefone = u.NTelefone,
                     DataNascimento = u.DataNascimento,
                     NumeroCc = u.NumeroCc,
                     Sexo = u.Sexo,
                     Morada = u.Morada,
-                    Pacientes = u.Pacientes,
-                    Medicos = u.Medicos
                 })
                 .ToListAsync();
             return users;
         }
-        public async Task<Result<UtilizadorDTO?>> GetUserByIdAsync(int id)
+        public async Task<Result<UtilizadorResponseDTO?>> GetUserByIdAsync(int id)
         {
-            var user = await _context.Utilizadores.Where(u => u.Id == id)
-                .Select(u => new UtilizadorDTO
-                {
-                    Id = u.Id,
-                    Nome = u.Nome,
-                    Password = u.Password,
-                    NTelefone = u.NTelefone,
-                    DataNascimento = u.DataNascimento,
-                    NumeroCc = u.NumeroCc,
-                    Sexo = u.Sexo,
-                    Morada = u.Morada,
-                    Pacientes = u.Pacientes,
-                    Medicos = u.Medicos
-                }).FirstOrDefaultAsync();
+            var user = await _context.Utilizadores.Where(u => u.Id == id).Select(u => new UtilizadorResponseDTO
+            {
+                Id = u.Id,
+                Nome = u.Nome,
+                NTelefone = u.NTelefone,
+                DataNascimento = u.DataNascimento,
+                NumeroCc = u.NumeroCc,
+                Sexo = u.Sexo,
+                Morada = u.Morada
+            }).FirstOrDefaultAsync();
             if (user != null)
             {
-                return Result<UtilizadorDTO?>.IsValid(user);
+                return Result<UtilizadorResponseDTO?>.IsValid(user);
             }
-            return Result<UtilizadorDTO?>.NaoEncontrado();
+            return Result<UtilizadorResponseDTO?>.NaoEncontrado();
         }
         public async Task<Result<UtilizadorDTO>> AddUserAsync(UtilizadorRegistrationDTO userDto)
         {
@@ -80,36 +72,21 @@ namespace SNS.Services
             var hashedPassword = passwordHasher.HashPassword(utilizador, userDto.Password);
             utilizador.Password = hashedPassword;
 
-            if (userDto.MedicoToAttributeId > 0)
-            {
-                var medicoToAttribute = await _medicoService.ValidateMedicoForUserRegistration(userDto);
-                if (medicoToAttribute.IsSuccess == false) return Result<UtilizadorDTO>.ErroNoPedido();
-                utilizador.Medicos.Add(medicoToAttribute.Data!);
-            }
-
-            if (!string.IsNullOrWhiteSpace(userDto.PacienteData!.Profissao)
-                && !string.IsNullOrWhiteSpace(userDto.PacienteData!.EntidadePatronal)
-                    && userDto.PacienteData.NumeroSns > 0)
-            {
-                var pacienteData = await _pacienteService.ValidatePacienteForRegistration(userDto);
-                if (pacienteData.IsSuccess == false) return Result<UtilizadorDTO>.ValorDuplicado();
-                utilizador.Pacientes.Add(pacienteData.Data!);
-            }
-
-            var uti = new Utilizador
-            {
-                Nome = utilizador.Nome,
-                Password = utilizador.Password,
-                NTelefone = utilizador.NTelefone,
-                DataNascimento = utilizador.DataNascimento,
-                NumeroCc = utilizador.NumeroCc,
-                Sexo = utilizador.Sexo,
-                Morada = utilizador.Morada,
-                TipoDeUtilizadorid = utilizador.TipoDeUtilizadorid
-            };
-
             await _context.Utilizadores.AddAsync(utilizador);
             await _context.SaveChangesAsync();
+
+           if (userDto.PacienteData!.MedicoToAttributeId != 0)
+            {
+                if (!string.IsNullOrWhiteSpace(userDto.PacienteData!.Profissao) && !string.IsNullOrWhiteSpace(userDto.PacienteData!.EntidadePatronal) && userDto.PacienteData.NumeroSns > 0)
+                {
+                    var userAddedId = await _context.Utilizadores.FirstOrDefaultAsync(u => u.NumeroCc == userDto.NumeroCc);
+                    var pacienteData = await _pacienteService.ValidatePacienteForRegistration(userDto, userDto.PacienteData, userAddedId!);
+
+                    await _context.Pacientes.AddAsync(pacienteData.Data!);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
             return Result<UtilizadorDTO>.IsValid(Mapper.MapperParaDTO(utilizador));
         }
 
@@ -136,9 +113,15 @@ namespace SNS.Services
         public async Task<Result<bool>> DeleteUserAsync(int id)
         {
             var userToDelete = await _context.Utilizadores.FindAsync(id);
+            var medicoAssociated = await _context.Medicos.FirstOrDefaultAsync(m => m.Utilizadorid == id);
+            var pacienteAssociated = await _context.Pacientes.FirstOrDefaultAsync(p => p.Utilizadorid == id);
             
             if (userToDelete == null) return Result<bool>.NaoApagado();
-            
+
+            if (medicoAssociated != null) medicoAssociated.IsActive = false;
+            if (pacienteAssociated != null) pacienteAssociated.IsActive = false;
+
+
             userToDelete.IsActive = false;
             userToDelete.DataApagado = DateTime.Now;
             await _context.SaveChangesAsync();

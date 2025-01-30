@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SNS.Data;
 
@@ -11,9 +12,11 @@ using SNS.Data;
 namespace SNS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250130141941_AddedFkMedicoidToPacienteModel")]
+    partial class AddedFkMedicoidToPacienteModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,6 +158,10 @@ namespace SNS.Migrations
                         .HasColumnType("int")
                         .HasColumnName("nMedico");
 
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Utilizadorid")
                         .HasColumnType("int");
 
@@ -188,6 +195,10 @@ namespace SNS.Migrations
 
                     b.Property<int>("Medicoid")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("NumeroSns")
                         .HasColumnType("int")

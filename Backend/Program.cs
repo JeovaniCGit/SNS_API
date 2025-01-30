@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SNS.Data;
+using SNS.Interfaces;
 using SNS.Services;
 
 namespace SNS

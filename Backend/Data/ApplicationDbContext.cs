@@ -102,8 +102,8 @@ public partial class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKMedico588860");
 
-            entity.HasOne<Utilizador>()
-                .WithMany(p => p.Medicos)
+            entity.HasOne(m => m.Utilizador)
+                .WithMany()
                 .HasForeignKey(d => d.Utilizadorid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKMedico808163");
@@ -126,11 +126,23 @@ public partial class ApplicationDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("profissao");
 
-            entity.HasOne<Utilizador>()
-                .WithMany(p => p.Pacientes)
+            entity.HasOne(p => p.Utilizador)
+                .WithMany()
                 .HasForeignKey(d => d.Utilizadorid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKPaciente149628");
+
+            //entity.HasOne(p => p.MedicoDoPaciente)
+            //.WithMany()
+            //.HasForeignKey(p => p.Medicoid)
+            //.OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Paciente>()
+            .HasOne(p => p.MedicoDoPaciente)
+            .WithMany() 
+            .HasForeignKey(p => p.Medicoid)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
         });
 
         modelBuilder.Entity<TipoDeSetor>(entity =>
