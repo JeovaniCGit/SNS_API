@@ -11,5 +11,9 @@ public class Paciente
     public string? EntidadePatronal { get; set; }
     public int? NumeroSns { get; set; }
     public int Utilizadorid { get; set; }
+    public int Medicoid {  get; set; }
+    public Utilizador? Utilizador { get; set; }
+    public Medico? MedicoDoPaciente { get; set; }
+    public bool IsActive { get; set; } = true;
     public virtual ICollection<BaixaMedica> BaixasMedicas { get; set; } = new List<BaixaMedica>();
 }

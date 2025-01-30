@@ -2,7 +2,7 @@
 using SNS.Models;
 using SNS.Utilities;
 
-namespace SNS.Services
+namespace SNS.Interfaces
 {
     public interface IBaixaMedicaService
     {

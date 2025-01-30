@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SNS.Data;
 using SNS.Models;
-using SNS.Services;
 using SNS.DTOs;
 using Microsoft.EntityFrameworkCore;
+using SNS.Interfaces;
 
 namespace SNS.Controllers
 {
@@ -59,7 +59,7 @@ namespace SNS.Controllers
         [HttpGet("GetAllMedicos")]
         public async Task<IActionResult> GetAllMedicos (int pageNumber, int pageSize)
         {
-            List<AddAndGetMedicoDataDTO> medicos = await _medicoService.GetAllMedicos(pageNumber, pageSize);
+            List<GetMedicoDataDTO> medicos = await _medicoService.GetAllMedicos(pageNumber, pageSize);
             if (medicos.Count == 0) return NotFound(medicos);
             if (pageNumber <= 0 || pageSize <= 0) return BadRequest();
             return Ok(medicos);

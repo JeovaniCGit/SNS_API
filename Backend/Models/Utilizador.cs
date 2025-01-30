@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SNS.Models;
 
@@ -16,7 +17,5 @@ public class Utilizador
     public required int TipoDeUtilizadorid { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime? DataApagado { get; set; }
-    public virtual ICollection<Medico> Medicos { get; set; } = new List<Medico>();
-    public virtual ICollection<Paciente> Pacientes { get; set; } = new List<Paciente>();
     public virtual TipoDeUtilizador TipoDeUtilizador { get; set; } = null!;
 }

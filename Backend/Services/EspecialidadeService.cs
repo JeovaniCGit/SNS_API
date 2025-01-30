@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SNS.Data;
 using SNS.DTOs;
+using SNS.Interfaces;
 using SNS.Models;
 
 namespace SNS.Services

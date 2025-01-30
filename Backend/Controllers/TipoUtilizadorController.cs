@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SNS.Data;
+using SNS.Interfaces;
 using SNS.Models;
-using SNS.Services;
 
 namespace SNS.Controllers
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SNS.Data;
 using SNS.DTOs;
+using SNS.Interfaces;
 using SNS.Models;
 using SNS.Utilities;
 
@@ -21,14 +22,13 @@ namespace SNS.Services
             if (pacienteBySNS == null) return Result<Paciente>.NaoEncontrado();
             return Result<Paciente>.IsValid(pacienteBySNS);
         }
-        public async Task<Result<Medico>> ValidateMedicoForUserRegistration(UtilizadorRegistrationDTO userDTO)
+        public async Task<Result<Medico>> ValidateMedicoForUserRegistration(CreatePacienteDTO pacienteDTO)
         {
-            var checkMedicoExists = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == userDTO.MedicoToAttributeId);
+            var checkMedicoExists = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == pacienteDTO.MedicoToAttributeId);
             if (checkMedicoExists == null) return Result<Medico>.NaoEncontrado("Medico não encontrado.");
-
             return Result<Medico>.IsValid(checkMedicoExists);
         }
-        public async Task<Result<Medico>> ValidateMedicoForMedicoRegistration (AddAndGetMedicoDataDTO userDTO)
+        public async Task<Result<Medico>> ValidateMedicoForMedicoRegistration (CreateMedicoWithIdDTO userDTO)
         {
             var medico = await _context.Medicos.FirstOrDefaultAsync(m => m.NMedico == userDTO.NMedico);
             if (medico == null) return Result<Medico>.IsValid();
@@ -39,24 +39,24 @@ namespace SNS.Services
             var user = await _context.Utilizadores.FirstOrDefaultAsync(user => user.Id == addMedico.MedicoUtilizadorId);
             if(user == null) return Result<Medico>.NaoEncontrado("Utilizador não encontrado");
 
-            var medicoDTO = addMedico.MedicoDTO;
-            var checkMedicoInDB = ValidateMedicoForMedicoRegistration(medicoDTO);
+            var checkMedicoInDB = ValidateMedicoForMedicoRegistration(addMedico);
             if (checkMedicoInDB.Result.IsSuccess == false) return Result<Medico>.ValorDuplicado();
 
-            var especialidade = await _context.Especialidades.FirstOrDefaultAsync(esp => esp.Id == medicoDTO.EspecialidadeId);
+            var especialidade = await _context.Especialidades.FirstOrDefaultAsync(esp => esp.Id == addMedico.EspecialidadeId);
             
             Medico newMedico = new Medico()
             {
-              NMedico = medicoDTO.NMedico,
-              Especialidadeid = medicoDTO.EspecialidadeId,
+              NMedico = addMedico.NMedico,
+              Especialidadeid = addMedico.EspecialidadeId,
               Utilizadorid = addMedico.MedicoUtilizadorId,
-              Especialidade = especialidade!
+              Especialidade = especialidade!,
+              Utilizador = user
             };
 
-            if (medicoDTO.HistoricoLaboral != null)
+            if (addMedico.HistoricoLaboral != null)
             {
-                var insti = await _context.Instituicoes.FirstOrDefaultAsync(i => i.Id == medicoDTO.HistoricoLaboral.Instituiçãoid);
-                var historicoToAdd = Mapper.MapperParaEntity(medicoDTO.HistoricoLaboral);
+                var insti = await _context.Instituicoes.FirstOrDefaultAsync(i => i.Id == addMedico.HistoricoLaboral.Instituiçãoid);
+                var historicoToAdd = Mapper.MapperParaEntity(addMedico.HistoricoLaboral);
                 historicoToAdd.Instituição = insti!;
                 newMedico.HistoricoLaborals.Add(historicoToAdd);
             }
@@ -64,23 +64,22 @@ namespace SNS.Services
             await _context.SaveChangesAsync();
             return Result<Medico>.IsValid(newMedico);
         }
-        public async Task<Result<AddAndGetMedicoDataDTO>> GetMedicoById(int id)
+        public async Task<Result<GetMedicoDataDTO>> GetMedicoById(int id)
         {
             var medico = await _context.Medicos.Where(m => m.Id == id)
-                .Include(e => e.Especialidade)
-                .Include(h => h.HistoricoLaborals)
+                .Include(m => m.Especialidade)
+                .Include(m => m.HistoricoLaborals)
+                .Include(m => m.Utilizador)
                 .FirstOrDefaultAsync();
-            var medicoUser = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Id == medico.Utilizadorid);
-            if (medico == null) return Result<AddAndGetMedicoDataDTO>.NaoEncontrado("Medico não encontrado");
-            var medicoDTO = new AddAndGetMedicoDataDTO
+            if (medico == null) return Result<GetMedicoDataDTO>.NaoEncontrado("Medico não encontrado");
+            var medicoDTO = new GetMedicoDataDTO
             {
-                MedicoName = medicoUser!.Nome,
                 Id = medico.Id,
-                NMedico = medico.NMedico,
-                Especialidade = medico.Especialidade,
-                AllHistoricoLaboral = medico.HistoricoLaborals
+                EspecialidadeId = medico.Especialidadeid,
+                AllHistoricoLaboral = medico.HistoricoLaborals,
+                UtilizadorDoMedico = Mapper.MapperParaDTOResponseMedicoPaciente(medico.Utilizador!)
             };
-            return Result<AddAndGetMedicoDataDTO>.IsValid(medicoDTO);
+            return Result<GetMedicoDataDTO>.IsValid(medicoDTO);
         }
         public async Task<Result<HistoricoLaboralDTO>> UpdateHistoricoLaboral(int medicoId, HistoricoLaboralDTO historicoDTO)
         {
@@ -95,22 +94,19 @@ namespace SNS.Services
             await _context.SaveChangesAsync();
             return Result<HistoricoLaboralDTO>.IsUpdated(Mapper.MapperParaDTO(historicoToAdd));
         }
-        public async Task<List<AddAndGetMedicoDataDTO>> GetAllMedicos(int pageNumber, int pageSize)
+        public async Task<List<GetMedicoDataDTO>> GetAllMedicos(int pageNumber, int pageSize)
         {
-            if (pageNumber <= 0 || pageSize <= 0) return new List<AddAndGetMedicoDataDTO>();
+            if (pageNumber <= 0 || pageSize <= 0) return new List<GetMedicoDataDTO>();
             var totalCount = await _context.Medicos.CountAsync();
-            if (totalCount == 0) return new List<AddAndGetMedicoDataDTO>();
+            if (totalCount == 0) return new List<GetMedicoDataDTO>();
             var medicos = await _context.Medicos
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(m => new AddAndGetMedicoDataDTO
+                .Select(m => new GetMedicoDataDTO
                 {
-                    MedicoName = _context.Utilizadores.Where(u => u.Id == m.Utilizadorid)
-                        .Select(u => u.Nome)
-                            .FirstOrDefault()!,
                     Id = m.Id,
-                    NMedico = m.NMedico,
-                    Especialidade = m.Especialidade,
+                    EspecialidadeId = m.Especialidadeid,
+                    UtilizadorDoMedico = Mapper.MapperParaDTOResponseMedicoPaciente(m.Utilizador!),
                     AllHistoricoLaboral = m.HistoricoLaborals.Select(h => new HistoricoLaboral
                     {
                         DataInicio = h.DataInicio,

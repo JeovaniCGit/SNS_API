@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SNS.Data;
 using SNS.DTOs;
+using SNS.Interfaces;
 using SNS.Models;
-using SNS.Services;
 
 namespace SNS.Controllers
 {
@@ -55,7 +55,7 @@ namespace SNS.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers( int pageNumber, int pageSize)
         {
-            List<UtilizadorDTO> users = await _utilizadorService.GetAllUsersAsync(pageNumber, pageSize);
+            List<UtilizadorResponseDTO> users = await _utilizadorService.GetAllUsersAsync(pageNumber, pageSize);
             if (users.Count == 0) return NotFound(users);
             if (pageSize <= 0 || pageSize <= 0) return BadRequest();
             return Ok(users);
