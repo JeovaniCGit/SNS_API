@@ -48,7 +48,7 @@ body::-webkit-scrollbar-track {
   gap: 2em;
 }
 .userDataDisplayDiv span, .profileDisplay span {
-  font-size: 1.15rem;
+  font-size: 1.07rem;
   font-weight: 500;
 }
 .contactosDisclaimer, .snsDisclaimer {
@@ -60,7 +60,7 @@ body::-webkit-scrollbar-track {
 }
 
 .profile-container h3, .profileDisplay h3 {
-  margin: -.9em;
+  margin: -.6em;
   margin-bottom: .6em;
 }
 .profile-container div {
@@ -69,4 +69,33 @@ body::-webkit-scrollbar-track {
 
 tr:hover {
   cursor: pointer;
+}
+
+.dadosPessoaisContainer div, #pacienteForm div{
+  font-weight: 500;
+  font-size: large;
+}
+
+.updatePacienteFormContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 2rem; 
+}
+.updatePacienteFormContainer form, .updatePacienteFormContainer div {
+  font-weight: 500;
+  font-size: large;
+}
+
+.updatePacienteFormContainer .form-label,
+.updatePacienteFormContainer .form-control {
+  width: 100%;
+}
+
+.updatePacienteFormContainer .text-end {
+  grid-column: span 2;
+  text-align: right;
+}
+
+.dadosPessoaisContainer span {
+  font-weight: 400;
 }

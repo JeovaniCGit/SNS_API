@@ -1,0 +1,113 @@
+body {
+  box-sizing: border-box;
+  padding-top: 100px;
+  height: 100vh;
+  margin: 0;
+}
+
+.body {
+  overflow-y: scroll !important;
+  scrollbar-width: thin !important;
+}
+
+body::-webkit-scrollbar {
+  width: .8em;
+  background-color: gray;
+}
+body::-webkit-scrollbar-track {
+  background: gray;
+}
+
+.titleIndex {
+  border-bottom: .5px solid rgba(0, 150, 0, 0.4);
+}
+.userDataDisplayDiv {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+.userDataDisplayDiv span, .profileDisplay span {
+  font-size: 1.07rem;
+  font-weight: 500;
+}
+
+.profile-container, .profile-container input, .profileDisplay input {
+  font-size: 1rem;
+}
+
+.profile-container h3, .profileDisplay h3 {
+  margin: -.6em;
+  margin-bottom: .6em;
+}
+.profile-container div {
+  width: 100%;
+}
+
+.dadosPessoaisContainer div, #medicoForm div{
+  font-weight: 500;
+  font-size: large;
+}
+
+.updateMedicoFormContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 2rem; 
+}
+.updateMedicoFormContainer form, .updateMedicoFormContainer div {
+  font-weight: 500;
+  font-size: large;
+}
+
+.updateMedicoFormContainer .form-label,
+.updateMedicoFormContainer .form-control {
+  width: 100%;
+}
+
+.updateMedicoFormContainer .text-end {
+  grid-column: span 2;
+  text-align: right;
+}
+
+.dadosPessoaisContainer span {
+  font-weight: 400;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+td {
+  align-content: center;
+  justify-content: center;
+}
+
+.btnDeEmitirBaixa:hover {
+  transition-duration: 0.5s;
+}
+
+.nav-tabs .nav-link {
+  color: black !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important; 
+}
+
+.nav-tabs .nav-link.active {
+  color: black !important;
+  border-bottom: 1px solid rgba(0, 150, 0, 0.4) !important; 
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
+}
+
+.nav-tabs .nav-link:hover {
+  border-bottom: 1px solid rgba(0, 150, 0, 0.4) !important; 
+  color: darkgray !important;
+  transition-duration: 0.3s !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
+}
+
+

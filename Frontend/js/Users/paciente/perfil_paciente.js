@@ -17,15 +17,15 @@
 }
 
 
- function displayUpdateDataForm() {
+function displayUpdateDataForm() {
   const container = document.querySelector(".profile-container");
   const main = document.getElementsByTagName("main");
-  container.textContent= "";
+  container.textContent = "";
   container.innerHTML = `
-   <div class="profile-container" style="width: 55%;">
-        <h3>Perfil do Paciente</h3>
-      
-        <form id="pacienteForm" class="needs-validation" novalidate>
+  <h3 class="d-inline-block display-5 titleIndex mb-4">Dados do Utilizador</h3>
+  <div class="d-flex flex-row updatePacienteFormContainer" style="width: 100%;">
+    <div>
+      <form id="pacienteForm" class="needs-validation" novalidate>
           <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
             <input type="text" class="form-control" id="nome" name="nome" value="${userData.nome}" required>
@@ -58,32 +58,31 @@
             <label for="morada" class="form-label">Morada</label>
             <input type="text" class="form-control" id="morada" name="morada" value="${userData.morada}" required>
           </div>
-      
-          <!-- Paciente Data -->
-          <h3 class="mt-4">Dados do Paciente</h3>
-      
+        </div>
+        <div>
           <div class="mb-3">
             <label for="profissao" class="form-label">Profissão</label>
-            <input type="text" class="form-control" id="profissao" name="profissao" value="${pacienteData.profissao}">
+            <input type="text" class="form-control" id="profissao" name="profissao" value="${pacienteData.profissao}" required>
           </div>
-      
+
           <div class="mb-3">
             <label for="entidadePatronal" class="form-label">Entidade Patronal</label>
-            <input type="text" class="form-control" id="entidadePatronal" name="entidadePatronal" value="${pacienteData.entidadePatronal}">
+            <input type="text" class="form-control" id="entidadePatronal" name="entidadePatronal" value="${pacienteData.entidadePatronal}" required>
           </div>
-      
+
           <div class="mb-3">
             <label for="numeroSNS" class="form-label">Número SNS</label>
-            <input type="number" class="form-control" id="numeroSNS" name="numeroSNS" value="${pacienteData.numeroSNS}">
+            <input type="number" class="form-control" id="numeroSNS" name="numeroSNS" value="${pacienteData.numeroSNS}" required>
           </div>
-      
+
           <div class="text-end">
-            <button type="submit" class="btn btn-primary" style="min-width: 15%; margin: 1.12em;">Atualizar dados</button>
+             <button type="submit" class="btn btn-outline-success" style="min-width: 8%; margin: 1.12em;">Atualizar dados</button>
           </div>
-        </form>
-      </div>
-  `
-  main.appendChild(container);
- }
+        </div>
+      </form>
+    </div>
+  </div>
+`;
+}
 
  document.getElementById("alterarDadosBtn").addEventListener('click',displayUpdateDataForm);

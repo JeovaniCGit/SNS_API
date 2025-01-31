@@ -27,8 +27,8 @@ const baixaMedicas = [
   { id: 25, pacienteId: 123, setor: "Public", dataEmissao: "2025-01-01", descricao: "Consulta geral", medico: { nome: "Rita Carvalho" }, diagnostico: "Síndrome do Túnel do Carpo", recomendacoes: "Paciente diagnosticado com síndrome do túnel do carpo. Recomenda-se uso de talas e ajuste ergonômico no local de trabalho." }
 ];
 
-const pacienteData = {profissao:"Padeiro", entidadePatronal:"Padaria do bairro", numeroSNS:647536546};
-const userData = {nome:"João Silva", nTelefone:963546534, dataNascimento:"01/12/1996", numeroCC:253635645, sexo:"Masculino", morada:"Rua da Liberdade, 123", pacientes:{pacienteData}, medico:{nome:"Artur fernandes"}};
+const medicoData = {nMedico:"746537647", especialidade:"oftalmologia", userData:{nome:"João Silva", nTelefone:963546534, dataNascimento:"01/12/1996", numeroCC:253635645, sexo:"Masculino", morada:"Rua da Liberdade, 123"}};
+
 
 function getBaixas(pageNumber, pageSize) {
   return new Promise(resolve => {
@@ -38,7 +38,6 @@ function getBaixas(pageNumber, pageSize) {
   });
 }
 
-
 function loadBaixasToTable() {
   const pageNumber = 1;  
   const pageSize = 10;
@@ -46,17 +45,10 @@ function loadBaixasToTable() {
   getBaixas(pageNumber, pageSize)
     .then(baixas => {
       const baixasContainer = document.getElementById("baixaCardBox");
-      const titleElement = document.querySelector(".titleIndex");
-      titleElement.textContent = "Baixas Médicas";
       baixasContainer.innerHTML = "";
 
-      const btnToChangeDisplay = document.querySelector(".exibirCard");
-      btnToChangeDisplay.innerHTML = "Mais recentes";
-      btnToChangeDisplay.onclick = loadBaixasToCard;
-
-
       const table = document.createElement("table");
-      table.classList.add("table", "table-hover", "table-striped", "table-bordered, table-responsive"); 
+      table.classList.add("table", "table-hover", "table-striped", "table-bordered", "table-responsive"); 
       
       const tableHead = `
         <thead>
@@ -65,6 +57,7 @@ function loadBaixasToTable() {
             <th>Médico</th>
             <th>Diagnóstico</th>
             <th>Recomendações</th>
+            <th>Ações</th>
           </tr>
         </thead>
       `;
@@ -75,12 +68,35 @@ function loadBaixasToTable() {
 
       baixas.forEach(baixa => {
         const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${baixa.dataEmissao}</td>
-          <td>${baixa.medico.nome}</td>
-          <td>${baixa.diagnostico}</td>
-          <td>${baixa.recomendacoes}</td>
-        `;
+        const tdDataEmissao = document.createElement("td");
+        tdDataEmissao.textContent = baixa.dataEmissao;
+        tdDataEmissao.onclick = () => openBaixaModal(baixa.id);
+        row.appendChild(tdDataEmissao);
+
+        const tdMedico = document.createElement("td");
+        tdMedico.textContent = baixa.medico.nome;
+        tdMedico.onclick = () => openBaixaModal(baixa.id);
+        row.appendChild(tdMedico);
+
+        const tdDiagnostico = document.createElement("td");
+        tdDiagnostico.textContent = baixa.diagnostico;
+        tdDiagnostico.onclick = () => openBaixaModal(baixa.id);
+        row.appendChild(tdDiagnostico);
+
+        const tdRecomendacoes = document.createElement("td");
+        tdRecomendacoes.textContent = baixa.recomendacoes;
+        tdRecomendacoes.onclick = () => openBaixaModal(baixa.id);
+        row.appendChild(tdRecomendacoes);
+
+        const tdAcoes = document.createElement("td");
+        const updateButton = document.createElement("button");
+        updateButton.classList.add("btn", "btn-outline-success", "m-2");
+        updateButton.style.border = ".5px solid rgba(0, 150, 0, 0.4)";
+        updateButton.textContent = "Corrigir";
+        updateButton.onclick = () => openBaixaModalUpdate(baixa.id);
+        tdAcoes.appendChild(updateButton);
+        row.appendChild(tdAcoes);
+
         tableBody.appendChild(row);
       });
       table.appendChild(tableBody);
@@ -89,49 +105,29 @@ function loadBaixasToTable() {
     .catch(error => console.log("Error loading baixas:", error));
 }
 
-function loadBaixasToCard() {
-  const pageNumber = 1;  
-  const pageSize = 7;
-  
-  getBaixas(pageNumber, pageSize)
-    .then(baixas => {
-      const btnToChangeDisplay = document.querySelector(".exibirTable");
-      const titleElement = document.querySelector(".titleIndex");
-      titleElement.textContent = "Resumos de Saúde";
-
-      btnToChangeDisplay.innerHTML = "Exibir todas";
-      btnToChangeDisplay.onclick = loadBaixasToTable;
-
-      const cardContainer = document.getElementById("baixaCardBox");
-      cardContainer.innerHTML = "";  
-
-      baixas.forEach(baixa => {
-        const card = document.createElement("div");
-        card.innerHTML = `
-          <div class="card border shadow-lg cardBorder" style="min-width: 15%; width:14rem; height:100%; border-radius: 5px; font-size: 1rem;" onclick="openBaixaModal(${baixa.id})">
-            <div class="card-body cardBody p-3" style="max-height:100%;">
-              <h6 class="card-title">Ato: ${baixa.id}</h6>
-              <p class="card-text">Data de emissão: ${baixa.dataEmissao}</p>
-              <p class="card-text">Médico: ${baixa.medico.nome}</p>
-              <p class="card-text">Diagnóstico: ${baixa.diagnostico}</p>
-              <p class="card-text">Recomendações: ${baixa.recomendacoes}</p>
-            </div>
-          </div>
-        `;
-       cardContainer.appendChild(card);
-      });
-
-      if (baixaMedicas.length <= 0) {
-        cardContainer.setAttribute('style', 'display: none !important');
-        btnToChangeDisplay.style.display = "none";
-        const baixasResponseDiv = document.getElementById("noBaixasToDisplay");
-        const response = document.createElement("p");
-        response.className = "baixaNotFound";
-        response.textContent ="De momento não há registos de resumos de saúde.";
-        baixasResponseDiv.appendChild(response);
-      }
-    })
-    .catch(error => console.log("Error loading baixas:", error));
+function emitirBaixa() {
+  const modal = new bootstrap.Modal(document.getElementById("baixaModal"),{ backdrop: 'static', keyboard: false });
+  document.getElementById("baixaModalLabel").textContent = "Emitir Nova Baixa";
+  document.querySelector("#baixaModal .modal-body").innerHTML = `
+    <form>
+      <div class="mb-3">
+        <label for="dataEmissao" class="form-label">Data de Emissão</label>
+        <input type="date" class="form-control" id="dataEmissao">
+      </div>
+      <div class="mb-3">
+        <label for="medico" class="form-label">Médico</label>
+        <input type="text" class="form-control" id="medico">
+      </div>
+      <div class="mb-3">
+        <label for="diagnostico" class="form-label">Diagnóstico</label>
+        <textarea class="form-control" id="diagnostico" rows="3"></textarea>
+      </div>
+      <div class="text-end">
+        <button type="submit" class="btn btn-outline-success" style="width:15%">Emitir</button>
+      </div>
+    </form>
+  `;
+  modal.show();
 }
 
 function openBaixaModal(id) {
@@ -147,39 +143,83 @@ function openBaixaModal(id) {
       <p class="card-text">Recomendações: ${baixa.recomendacoes}</p>
     `;
 
-    const modal = new bootstrap.Modal(document.getElementById("baixaModal"));
+    const modal = new bootstrap.Modal(document.getElementById("baixaModal"),
+  {backdrop: 'static', keyboard: false });
     modal.show();
   } else {
     console.error("Baixa not found for ID:", id);
   }
 }
 
-function displayPacienteData() {
-  const pacienteDataContainer = document.getElementById("PacienteDataContainer");
-  const pacienteDataDiv = document.createElement('div');
-  pacienteDataDiv.innerHTML = `
+function openBaixaModalUpdate(id) {
+  const baixa = baixaMedicas.find(b => b.id === id);
+
+  if (baixa) {
+    document.getElementById("baixaModalLabel").textContent = `Atualizar Dados de Saúde`;
+    document.querySelector("#baixaModal .modal-body").innerHTML = `
+      <form id="updateBaixaForm" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="atoId" class="form-label">Ato</label>
+          <input type="text" class="form-control" id="atoId" name="atoId" value="${baixa.id}" readonly>
+        </div>
+        
+        <div class="mb-3">
+          <label for="dataEmissao" class="form-label">Data de Emissão</label>
+          <input type="date" class="form-control" id="dataEmissao" name="dataEmissao" value="${baixa.dataEmissao}" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="medicoNome" class="form-label">Médico</label>
+          <input type="text" class="form-control" id="medicoNome" name="medicoNome" value="${baixa.medico.nome}" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="diagnostico" class="form-label">Diagnóstico</label>
+          <textarea class="form-control" id="diagnostico" name="diagnostico" rows="3" required>${baixa.diagnostico}</textarea>
+        </div>
+        
+        <div class="mb-3">
+          <label for="recomendacoes" class="form-label">Recomendações</label>
+          <textarea class="form-control" id="recomendacoes" name="recomendacoes" rows="3" required>${baixa.recomendacoes}</textarea>
+        </div>
+        
+        <div class="text-end">
+          <button type="submit" class="btn btn-outline-success">Guardar Alterações</button>
+        </div>
+      </form>
+    `;
+    const modal = new bootstrap.Modal(document.getElementById("baixaModal"),{backdrop: 'static', keyboard: false });
+    modal.show();
+  } else {
+    console.error("Baixa not found for ID:", id);
+  }
+}
+
+function displayMedicoData() {
+  const medicoDataContainer = document.getElementById("medicoDataContainer");
+  const medicoDataDiv = document.createElement('div');
+  medicoDataDiv.innerHTML = `
    <div class="userDataDisplayDiv">
       <div>
         <h4>Dados do Utilizador</h4>
-        <div><span>Nome:</span> ${userData.nome}</div>
-        <div><span>Data de Nascimento:</span> ${userData.dataNascimento}</div>
-        <div><span>Número CC:</span> ${userData.numeroCC}</div>
-        <div><span>Sexo:</span> ${userData.sexo}</div>
+        <div><span>Nome:</span> ${medicoData.userData.nome}</div>
+        <div><span>Data de Nascimento:</span> ${medicoData.userData.dataNascimento}</div>
+        <div><span>Número CC:</span> ${medicoData.userData.numeroCC}</div>
+        <div><span>Sexo:</span> ${medicoData.userData.sexo}</div>
       </div>
       
       <div>
-        <h4>Dados do Paciente</h4>
-        <div><span>Número SNS:</span> ${userData.pacientes.pacienteData.numeroSNS}</div>
-        <div><span>Médico:</span> ${userData.medico.nome}</div>
+        <h4>Dados do medico</h4>
+        <div><span>Número médico:</span> ${medicoData.nMedico}</div>
+        <div><span>Especialidade:</span> ${medicoData.especialidade}</div>
       </div>
     </div>
   `
 
-  pacienteDataContainer.appendChild(pacienteDataDiv);
+  medicoDataContainer.appendChild(medicoDataDiv);
 };
 
 
 document.addEventListener("DOMContentLoaded", function() {
-  loadBaixasToCard();
-  displayPacienteData();
+  displayMedicoData();
 });
