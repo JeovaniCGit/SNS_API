@@ -1,6 +1,6 @@
-﻿using SNS.DTOs;
-using SNS.Utilities;
+﻿using SNS.Utilities;
 using SNS.Models;
+using SNS.DTOs;
 
 namespace SNS.Interfaces
 {

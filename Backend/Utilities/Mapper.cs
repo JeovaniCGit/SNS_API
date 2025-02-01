@@ -106,6 +106,30 @@ namespace SNS.Utilities
                 Id = medico.Id,
                 EspecialidadeId = medico.Especialidadeid,
                 AllHistoricoLaboral = medico.HistoricoLaborals,
+                NomeDoMedico = medico.Utilizador!.Nome
+            };
+        }
+        public static GetPacienteParaBaixaDTO MapperParaDTOParaBaixa(Paciente paciente)
+        {
+            return new GetPacienteParaBaixaDTO
+            {
+                Id = paciente.Id,
+                Profissao = paciente.Profissao,
+                EntidadePatronal = paciente.EntidadePatronal,
+                NumeroSns = paciente.NumeroSns,
+                Nome = paciente.Utilizador!.Nome,
+                DataNascimento = paciente.Utilizador!.DataNascimento
+            };
+        }
+        public static GetMedicoDataParaBaixaDTO MapperParaDTOParaBaixa(Medico medico)
+        {
+            return new GetMedicoDataParaBaixaDTO
+            {
+                Id = medico.Id,
+                EspecialidadeId = medico.Especialidadeid,
+                AllHistoricoLaboral = medico.HistoricoLaborals,
+                Nome = medico.Utilizador!.Nome,
+                DataNascimento = medico.Utilizador!.DataNascimento
             };
         }
     }

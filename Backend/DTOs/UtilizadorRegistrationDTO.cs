@@ -31,7 +31,7 @@ namespace SNS.DTOs
         public required string Morada { get; set; }
 
         [Required(ErrorMessage = "O tipo de utilizador é obrigatório.")]
-        public required int TipoDeUtilizadorid {  get; set; }
+        public required int TipoDeUtilizadorid { get; set; }
 
         public CreatePacienteDTO? PacienteData { get; set; }
     }

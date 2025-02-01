@@ -1,4 +1,6 @@
-﻿namespace SNS.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SNS.Models
 {
     public class BaixaMedica
     {
@@ -12,7 +14,5 @@
         public int PacienteId { get; set; }
         public int tipoDeSetorId { get; set; }
         public virtual TipoDeSetor tipoDeSetor { get; set; } = null!;
-        public virtual Medico Medico { get; set; } = null!;
-        public virtual Paciente Paciente { get; set; } = null!;
     }
 }

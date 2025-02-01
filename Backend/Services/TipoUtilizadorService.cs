@@ -14,6 +14,7 @@ namespace SNS.Services
             _context = context;
         }
 
+        #region Read
         public async Task<List<TipoDeUtilizador>> GetAllTiposUtilizador()
         {
             List<TipoDeUtilizador> tiposDeUtilizador = await _context.TiposDeUtilizador.Select(t => new TipoDeUtilizador
@@ -24,5 +25,6 @@ namespace SNS.Services
             if (tiposDeUtilizador.Count == 0) return new List<TipoDeUtilizador>();
             return tiposDeUtilizador;
         }
+        #endregion
     }
 }

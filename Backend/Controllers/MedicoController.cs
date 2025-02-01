@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SNS.Data;
 using SNS.Models;
-using SNS.DTOs;
 using Microsoft.EntityFrameworkCore;
 using SNS.Interfaces;
+using SNS.DTOs;
 
 namespace SNS.Controllers
 {

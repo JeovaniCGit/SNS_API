@@ -15,13 +15,8 @@ namespace SNS.Services
         {
             _context = context;
         }
-        public async Task<Result<Paciente>> GetPacienteByNumeroSNSAsync(int numeroSNS)
-        {
-            if (numeroSNS <= 0) return Result<Paciente>.ErroNoPedido();
-            var pacienteBySNS = await _context.Pacientes.FirstOrDefaultAsync(paciente => paciente.NumeroSns == numeroSNS);
-            if (pacienteBySNS == null) return Result<Paciente>.NaoEncontrado();
-            return Result<Paciente>.IsValid(pacienteBySNS);
-        }
+
+        #region Validation
         public async Task<Result<Medico>> ValidateMedicoForUserRegistration(CreatePacienteDTO pacienteDTO)
         {
             var checkMedicoExists = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == pacienteDTO.MedicoToAttributeId);
@@ -34,13 +29,16 @@ namespace SNS.Services
             if (medico == null) return Result<Medico>.IsValid();
             return Result<Medico>.ValorDuplicado();
         }
-        public async Task<Result<Medico>> AddMedico(CreateMedicoWithIdDTO addMedico)
+        #endregion
+
+        #region Create
+        public async Task<Result<GetMedicoDataDTO>> AddMedico(CreateMedicoWithIdDTO addMedico)
         {
             var user = await _context.Utilizadores.FirstOrDefaultAsync(user => user.Id == addMedico.MedicoUtilizadorId);
-            if(user == null) return Result<Medico>.NaoEncontrado("Utilizador não encontrado");
+            if(user == null) return Result<GetMedicoDataDTO>.NaoEncontrado("Utilizador não encontrado");
 
             var checkMedicoInDB = ValidateMedicoForMedicoRegistration(addMedico);
-            if (checkMedicoInDB.Result.IsSuccess == false) return Result<Medico>.ValorDuplicado();
+            if (checkMedicoInDB.Result.IsSuccess == false) return Result<GetMedicoDataDTO>.ValorDuplicado();
 
             var especialidade = await _context.Especialidades.FirstOrDefaultAsync(esp => esp.Id == addMedico.EspecialidadeId);
             
@@ -62,7 +60,17 @@ namespace SNS.Services
             }
             await _context.Medicos.AddAsync(newMedico);
             await _context.SaveChangesAsync();
-            return Result<Medico>.IsValid(newMedico);
+            return Result<GetMedicoDataDTO>.IsValid(Mapper.MapperParaDTO(newMedico));
+        }
+        #endregion
+
+        #region Read
+        public async Task<Result<Paciente>> GetPacienteByNumeroSNSAsync(int numeroSNS)
+        {
+            if (numeroSNS <= 0) return Result<Paciente>.ErroNoPedido();
+            var pacienteBySNS = await _context.Pacientes.FirstOrDefaultAsync(paciente => paciente.NumeroSns == numeroSNS);
+            if (pacienteBySNS == null) return Result<Paciente>.NaoEncontrado();
+            return Result<Paciente>.IsValid(pacienteBySNS);
         }
         public async Task<Result<GetMedicoDataDTO>> GetMedicoById(int id)
         {
@@ -80,19 +88,6 @@ namespace SNS.Services
                 UtilizadorDoMedico = Mapper.MapperParaDTOResponseMedicoPaciente(medico.Utilizador!)
             };
             return Result<GetMedicoDataDTO>.IsValid(medicoDTO);
-        }
-        public async Task<Result<HistoricoLaboralDTO>> UpdateHistoricoLaboral(int medicoId, HistoricoLaboralDTO historicoDTO)
-        {
-            var medico = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == medicoId);
-            if (medico == null) return Result<HistoricoLaboralDTO>.NaoEncontrado("Medico não encontrado");
-
-            var historicoToAdd = Mapper.MapperParaEntity(historicoDTO);
-            if (medico.HistoricoLaborals.Contains(historicoToAdd)) return Result<HistoricoLaboralDTO>.ValorDuplicado();
-            if (historicoToAdd == null) return Result<HistoricoLaboralDTO>.ErroNoPedido();
-
-            medico.HistoricoLaborals.Add(historicoToAdd);
-            await _context.SaveChangesAsync();
-            return Result<HistoricoLaboralDTO>.IsUpdated(Mapper.MapperParaDTO(historicoToAdd));
         }
         public async Task<List<GetMedicoDataDTO>> GetAllMedicos(int pageNumber, int pageSize)
         {
@@ -117,5 +112,23 @@ namespace SNS.Services
                 .ToListAsync();
             return medicos!;
         }
+        #endregion
+
+        #region Update
+        public async Task<Result<HistoricoLaboralDTO>> UpdateHistoricoLaboral(int medicoId, HistoricoLaboralDTO historicoDTO)
+        {
+            var medico = await _context.Medicos.FirstOrDefaultAsync(medico => medico.Id == medicoId);
+            if (medico == null) return Result<HistoricoLaboralDTO>.NaoEncontrado("Medico não encontrado");
+
+            var historicoToAdd = Mapper.MapperParaEntity(historicoDTO);
+            if (medico.HistoricoLaborals.Contains(historicoToAdd)) return Result<HistoricoLaboralDTO>.ValorDuplicado();
+            if (historicoToAdd == null) return Result<HistoricoLaboralDTO>.ErroNoPedido();
+
+            medico.HistoricoLaborals.Add(historicoToAdd);
+            await _context.SaveChangesAsync();
+            return Result<HistoricoLaboralDTO>.IsUpdated(Mapper.MapperParaDTO(historicoToAdd));
+        }
+        #endregion
+
     }
 }

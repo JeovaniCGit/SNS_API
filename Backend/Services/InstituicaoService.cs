@@ -14,8 +14,9 @@ namespace SNS.Services
         public InstituicaoService(ApplicationDbContext context)
         {
             _context = context;
-        } 
-        
+        }
+
+        #region Create
         public async Task<Result<InstituicaoDTO>> CreateInstituicao (InstituicaoDTO institutoDTO)
         {
             var checkInsti = await _context.Instituicoes.FirstOrDefaultAsync(instituto => instituto.Descri == institutoDTO.Descri
@@ -35,7 +36,9 @@ namespace SNS.Services
             await _context.SaveChangesAsync();
             return Result<InstituicaoDTO>.IsValid(Mapper.MapperParaDTO(insti));
         }
+        #endregion
 
+        #region Read
         public async Task<List<InstituicaoDTO>> GetAllInstituicoes()
         {
             List<InstituicaoDTO> institutos = await _context.Instituicoes.Select(i => new InstituicaoDTO
@@ -61,6 +64,7 @@ namespace SNS.Services
             if(insti == null) return Result<InstituicaoDTO>.NaoEncontrado();
             return Result<InstituicaoDTO>.IsValid(insti);
         }
+        #endregion
     }
 }
 

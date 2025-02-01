@@ -132,10 +132,6 @@ public partial class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKPaciente149628");
 
-            //entity.HasOne(p => p.MedicoDoPaciente)
-            //.WithMany()
-            //.HasForeignKey(p => p.Medicoid)
-            //.OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<Paciente>()
             .HasOne(p => p.MedicoDoPaciente)

@@ -14,6 +14,7 @@ namespace SNS.Services
             _context = context;
         }
 
+        #region GetEspecialidades
         public async Task<List<Especialidade>> GetAllEspecialidades(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0) return new List<Especialidade>();
@@ -30,5 +31,6 @@ namespace SNS.Services
                 .ToListAsync();
             return especialidades;
         }
+        #endregion
     }
 }

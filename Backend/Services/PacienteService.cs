@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SNS.Data;
-using SNS.DTOs;
 using SNS.Utilities;
 using SNS.Models;
 using SNS.Interfaces;
+using SNS.DTOs;
 
 namespace SNS.Services
 {
@@ -19,6 +19,7 @@ namespace SNS.Services
             _medicoService = medicoService;
         }
 
+        #region Read
         public async Task<List<GetPacienteDTO>> GetAllPacientes(int pageNumber, int pageSize)
         {
             if (pageNumber <= 0 || pageSize <= 0) return new List<GetPacienteDTO>();
@@ -29,6 +30,7 @@ namespace SNS.Services
                 .Take(pageSize)
                 .Include(p => p.Utilizador)
                 .Include(p => p.MedicoDoPaciente)
+                .Include(p => p.MedicoDoPaciente!.Utilizador)
                 .Select(p => new GetPacienteDTO
                 {
                     Id = p.Id,
@@ -44,7 +46,7 @@ namespace SNS.Services
 
         public async Task<Result<GetPacienteDTO>> GetPacienteById(int id)
         {
-            var paciente = await _context.Pacientes.Include(p => p.Utilizador).Include(p => p.MedicoDoPaciente).Select(p => new GetPacienteDTO
+            var paciente = await _context.Pacientes.Include(p => p.Utilizador).Include(p => p.MedicoDoPaciente).Include(p => p.MedicoDoPaciente!.Utilizador).Select(p => new GetPacienteDTO
             {
                 Id = p.Id,
                 Profissao = p.Profissao,
@@ -59,7 +61,9 @@ namespace SNS.Services
             }
             return Result<GetPacienteDTO>.NaoEncontrado();
         }
+        #endregion
 
+        #region Validation
         public async Task<Result<Paciente>> ValidatePacienteForRegistration(UtilizadorRegistrationDTO userDTO, CreatePacienteDTO pacienteDTO, Utilizador user)
         {
             var checkPacienteExists = await _context.Pacientes.FirstOrDefaultAsync(paciente => paciente.NumeroSns == userDTO.PacienteData!.NumeroSns);
@@ -80,6 +84,7 @@ namespace SNS.Services
 
             return Result<Paciente>.IsValid(newPaciente);
         }
+        #endregion
 
 
     }

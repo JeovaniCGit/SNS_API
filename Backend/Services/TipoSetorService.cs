@@ -14,6 +14,7 @@ namespace SNS.Services
             _context = context;
         }
 
+        #region Read
         public async Task<List<TipoDeSetor>> GetAllTiposSetor()
         {
             List<TipoDeSetor> tiposSetor = await _context.TiposDeSetor.Select(x => new TipoDeSetor
@@ -24,5 +25,6 @@ namespace SNS.Services
             if(tiposSetor.Count == 0) return new List<TipoDeSetor>();
             return tiposSetor;
         }
+        #endregion
     }
 }
