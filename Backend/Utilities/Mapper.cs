@@ -5,16 +5,17 @@ namespace SNS.Utilities
 {
     public class Mapper
     {
+        #region MapperUtilizador
         public static Utilizador MapperParaEntity (UtilizadorRegistrationDTO userDto)
         {
             return new Utilizador
             {
-                Nome = userDto.Nome,
+                Nome = userDto.Nome.FirstLetterToUpperCase()!,
                 NTelefone = userDto.NTelefone,
                 DataNascimento = userDto.DataNascimento,
                 NumeroCc = userDto.NumeroCc,
                 Sexo = userDto.Sexo,
-                Morada = userDto.Morada,
+                Morada = userDto.Morada.FirstLetterToUpperCase()!,
                 TipoDeUtilizadorid = userDto.TipoDeUtilizadorid
             };
         }
@@ -46,7 +47,9 @@ namespace SNS.Utilities
                 Morada = utilizador.Morada
             };
         }
+        #endregion
 
+        #region MapperHistoricoLaboral
         public static HistoricoLaboral MapperParaEntity (HistoricoLaboralDTO historicoDTO)
         {
             return new HistoricoLaboral
@@ -66,17 +69,21 @@ namespace SNS.Utilities
                 DataFim = historico.DataFim
             };
         }
+        #endregion
 
-        public static InstituicaoDTO MapperParaDTO (Instituição instituicao)
+        #region MapperInstituicao
+        public static GetInstituicaoDTO MapperParaDTO (Instituição instituicao)
         {
-            return new InstituicaoDTO
+            return new GetInstituicaoDTO
             {
                 Id = instituicao.Id,
                 Descri = instituicao.Descri!,
                 TipoDeSetor = instituicao.TipoDeSetor,
             };
         }
+        #endregion
 
+        #region MapperPaciente
         public static Paciente MapperParaEntity (CreatePacienteDTO pacienteDTO, Utilizador user)
         {
             return new Paciente
@@ -99,16 +106,6 @@ namespace SNS.Utilities
             };
         }
 
-        public static GetMedicoDataDTO MapperParaDTO (Medico medico)
-        {
-            return new GetMedicoDataDTO
-            {
-                Id = medico.Id,
-                EspecialidadeId = medico.Especialidadeid,
-                AllHistoricoLaboral = medico.HistoricoLaborals,
-                NomeDoMedico = medico.Utilizador!.Nome
-            };
-        }
         public static GetPacienteParaBaixaDTO MapperParaDTOParaBaixa(Paciente paciente)
         {
             return new GetPacienteParaBaixaDTO
@@ -119,6 +116,20 @@ namespace SNS.Utilities
                 NumeroSns = paciente.NumeroSns,
                 Nome = paciente.Utilizador!.Nome,
                 DataNascimento = paciente.Utilizador!.DataNascimento
+            };
+        }
+
+        #endregion
+
+        #region MapperMedico
+        public static GetMedicoDataDTO MapperParaDTO (Medico medico)
+        {
+            return new GetMedicoDataDTO
+            {
+                Id = medico.Id,
+                EspecialidadeId = medico.Especialidadeid,
+                AllHistoricoLaboral = medico.HistoricoLaborals,
+                NomeDoMedico = medico.Utilizador!.Nome
             };
         }
         public static GetMedicoDataParaBaixaDTO MapperParaDTOParaBaixa(Medico medico)
@@ -132,5 +143,6 @@ namespace SNS.Utilities
                 DataNascimento = medico.Utilizador!.DataNascimento
             };
         }
+        #endregion
     }
 }

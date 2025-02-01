@@ -15,6 +15,7 @@ namespace SNS.Controllers
             _especialidadeService = especialidadeService;
         }
 
+        #region Read
         [HttpGet("GetAllEspecialidades")]
         public async Task<IActionResult> GetAllEspecialidades(int pageNumber, int pageSize)
         {
@@ -23,5 +24,6 @@ namespace SNS.Controllers
             if(pageNumber <= 0 || pageSize <= 0) return BadRequest();
             return Ok(especialidades);
         }
+        #endregion
     }
 }

@@ -81,7 +81,13 @@ public partial class ApplicationDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("descri");
 
-            entity.HasOne(d => d.TipoDeSetor).WithMany(p => p.Instituiçãos)
+            //entity.HasOne(d => d.TipoDeSetor).WithMany(p => p.Instituiçãos)
+            //    .HasForeignKey(d => d.TipoDeSetorid)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FKInstituiçã171310");
+
+            entity.HasOne(d => d.TipoDeSetor)
+                .WithMany()
                 .HasForeignKey(d => d.TipoDeSetorid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FKInstituiçã171310");

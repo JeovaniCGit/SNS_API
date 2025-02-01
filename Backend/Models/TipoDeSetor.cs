@@ -9,5 +9,5 @@ public class TipoDeSetor
 
     public string? Descri { get; set; }
 
-    public virtual ICollection<Instituição> Instituiçãos { get; set; } = new List<Instituição>();
+    //public virtual ICollection<Instituição> Instituiçãos { get; set; } = new List<Instituição>();
 }

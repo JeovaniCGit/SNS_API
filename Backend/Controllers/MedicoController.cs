@@ -20,15 +20,7 @@ namespace SNS.Controllers
             _medicoService = medicoService;
         }
 
-        [HttpGet("GetPacientesByNumeroSNS")]
-        public async Task<IActionResult> GetPacienteByNumeroSNSAsync(int numeroSNS)
-        {
-            if (numeroSNS <= 0) return BadRequest("Número SNS inválido");
-            var result = await _medicoService.GetPacienteByNumeroSNSAsync(numeroSNS);
-            if (result.IsSuccess == false) return NotFound(result?.Message);
-            return Ok(result);
-        }
-
+        #region Create
         [HttpPost("AddMedico")]
         public async Task<IActionResult> AddMedico([FromBody] CreateMedicoWithIdDTO createMedicoDTO)
         {
@@ -36,6 +28,17 @@ namespace SNS.Controllers
             var result = await _medicoService.AddMedico(createMedicoDTO);
             if (result.IsSuccess == false) return BadRequest(result.Message);
             return CreatedAtAction(nameof(GetMedicoById), new { id = result.Data!.Id }, result);
+        }
+        #endregion
+
+        #region Read
+        [HttpGet("GetPacientesByNumeroSNS")]
+        public async Task<IActionResult> GetPacienteByNumeroSNSAsync(int numeroSNS)
+        {
+            if (numeroSNS <= 0) return BadRequest("Número SNS inválido");
+            var result = await _medicoService.GetPacienteByNumeroSNSAsync(numeroSNS);
+            if (result.IsSuccess == false) return NotFound(result?.Message);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -47,6 +50,17 @@ namespace SNS.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAllMedicos")]
+        public async Task<IActionResult> GetAllMedicos(int pageNumber, int pageSize)
+        {
+            List<GetMedicoDataDTO> medicos = await _medicoService.GetAllMedicos(pageNumber, pageSize);
+            if (medicos.Count == 0) return NotFound(medicos);
+            if (pageNumber <= 0 || pageSize <= 0) return BadRequest();
+            return Ok(medicos);
+        }
+        #endregion
+
+        #region Update
         [HttpPut("UpdateHistoricoMedico_{medicoId}")]
         public async Task<IActionResult> UpdateHistoricoLaboral([FromRoute]int medicoId, HistoricoLaboralDTO historicoDTO)
         {
@@ -56,13 +70,6 @@ namespace SNS.Controllers
             if (result.IsSuccess == false) return BadRequest(result.Message);
             return Ok(result);
         }
-        [HttpGet("GetAllMedicos")]
-        public async Task<IActionResult> GetAllMedicos (int pageNumber, int pageSize)
-        {
-            List<GetMedicoDataDTO> medicos = await _medicoService.GetAllMedicos(pageNumber, pageSize);
-            if (medicos.Count == 0) return NotFound(medicos);
-            if (pageNumber <= 0 || pageSize <= 0) return BadRequest();
-            return Ok(medicos);
-        }
+        #endregion
     }
 }

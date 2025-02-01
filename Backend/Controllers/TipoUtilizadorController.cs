@@ -16,6 +16,7 @@ namespace SNS.Controllers
             _tipoUtilizadorService = tipoUtilizadorService;
         }
 
+        #region Read
         [HttpGet("GetAllTiposUtilizador")]
         public async Task<IActionResult> GetAllTiposUtilizador()
         {
@@ -23,5 +24,6 @@ namespace SNS.Controllers
             if(tipos.Count == 0) return NotFound(tipos);
             return Ok(tipos);
         }
+        #endregion
     }
 }

@@ -74,8 +74,8 @@ namespace SNS.Services
             var medico = await _context.Medicos.FirstOrDefaultAsync(m => m.Id == pacienteDTO.MedicoToAttributeId);
             var newPaciente = new Paciente
             {
-                Profissao = userDTO.PacienteData!.Profissao,
-                EntidadePatronal = userDTO.PacienteData.EntidadePatronal,
+                Profissao = userDTO.PacienteData!.Profissao.FirstLetterToUpperCase(),
+                EntidadePatronal = userDTO.PacienteData.EntidadePatronal.FirstLetterToUpperCase(),
                 NumeroSns = userDTO.PacienteData.NumeroSns,
                 MedicoDoPaciente = medico,
                 Medicoid = medico!.Id,

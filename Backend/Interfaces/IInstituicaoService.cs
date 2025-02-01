@@ -6,8 +6,8 @@ namespace SNS.Interfaces
 {
     public interface IInstituicaoService
     {
-        Task<Result<InstituicaoDTO>> CreateInstituicao(InstituicaoDTO institutoDTO);
-        Task<List<InstituicaoDTO>> GetAllInstituicoes();
-        Task<Result<InstituicaoDTO>> GetInstituicaoById(int id);
+        Task<Result<GetInstituicaoDTO>> CreateInstituicao(CreateInstituicaoDTO institutoDTO);
+        Task<List<GetInstituicaoDTO>> GetAllInstituicoes();
+        Task<Result<GetInstituicaoDTO>> GetInstituicaoById(int id);
     }
 }

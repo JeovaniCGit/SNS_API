@@ -15,6 +15,8 @@ namespace SNS.Controllers
             _context = context;
             _tipoSetorService = tipoSetorService;
         }
+
+        #region Read
         [HttpGet("GetAllTiposSetor")]
         public async Task<IActionResult> GetAllTiposSetor()
         {
@@ -22,7 +24,6 @@ namespace SNS.Controllers
             if(tipos.Count == 0) return NotFound(tipos);
             return Ok(tipos);
         }
-
-        
+        #endregion
     }
 }

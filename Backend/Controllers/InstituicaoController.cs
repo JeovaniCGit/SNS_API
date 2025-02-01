@@ -18,21 +18,25 @@ namespace SNS.Controllers
             _instituicaoService = instituicaoService;
         }
 
+        #region Create
+        [HttpPost("CreateInstituicao")]
+        public async Task<IActionResult> CreateInstituicao(CreateInstituicaoDTO instituicaoDTO)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var result = await _instituicaoService.CreateInstituicao(instituicaoDTO);
+            if (result.IsSuccess == false) return BadRequest(result.Message);
+            return CreatedAtAction(nameof(GetInstituicaoById), new { id = result.Data!.Id }, result);
+        }
+        #endregion
+
+
+        #region Read
         [HttpGet("GetAllInstituicoes")]
         public async Task<IActionResult> GetAllInstituicoes()
         {
-            List<InstituicaoDTO> insti = await _instituicaoService.GetAllInstituicoes();
+            List<GetInstituicaoDTO> insti = await _instituicaoService.GetAllInstituicoes();
             if (insti.Count == 0) return NotFound(insti);
             return Ok(insti);
-        }
-
-        [HttpPost("CreateInstituicao")]
-        public async Task<IActionResult> CreateInstituicao (InstituicaoDTO instituicaoDTO)
-        {
-            if(!ModelState.IsValid) return BadRequest(ModelState);
-            var result = await _instituicaoService.CreateInstituicao(instituicaoDTO);
-            if(result.IsSuccess == false) return BadRequest(result.Message);
-            return CreatedAtAction(nameof(GetInstituicaoById), new { id = result.Data!.Id }, result);
         }
 
         [HttpGet("{id}")]
@@ -43,5 +47,6 @@ namespace SNS.Controllers
             if (result.IsSuccess == false) return NotFound(result.Message);
             return Ok(result);
         }
+        #endregion
     }
 }

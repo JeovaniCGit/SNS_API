@@ -127,10 +127,10 @@ namespace SNS.Services
                 return Result<Utilizador?>.NaoEncontrado();
             }
 
-            userToUpdate.Nome = updatedUser.Nome;
+            userToUpdate.Nome = updatedUser.Nome.FirstLetterToUpperCase()!;
             userToUpdate.NTelefone = updatedUser.NTelefone;
             userToUpdate.Sexo = updatedUser.Sexo;
-            userToUpdate.Morada = updatedUser.Morada;
+            userToUpdate.Morada = updatedUser.Morada.FirstLetterToUpperCase()!;
 
             await _context.SaveChangesAsync();
             return Result<Utilizador?>.IsUpdated(userToUpdate);

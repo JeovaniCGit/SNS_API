@@ -18,6 +18,7 @@ namespace SNS.Controllers
             _pacienteService = pacienteService;
         }
 
+        #region Read
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPacienteById(int id)
         {
@@ -35,6 +36,6 @@ namespace SNS.Controllers
             if (pageSize <= 0 || pageSize <= 0) return BadRequest();
             return Ok(pacientes);
         }
-
+        #endregion
     }
 }

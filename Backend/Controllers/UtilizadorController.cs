@@ -19,6 +19,7 @@ namespace SNS.Controllers
             _utilizadorService = utilizadorService;
         }
 
+        #region Create
         [HttpPost("AddUser")]
         public async Task<IActionResult> AddUserAsync([FromBody] UtilizadorRegistrationDTO userDto)
         {
@@ -27,7 +28,9 @@ namespace SNS.Controllers
             if (result.IsSuccess == false) return BadRequest(result.Message);
             return CreatedAtAction(nameof(GetUserById), new { id = result.Data!.Id }, result);
         }
+        #endregion
 
+        #region Login
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] UtilizadorLoginDTO loginDto)
         {
@@ -42,7 +45,9 @@ namespace SNS.Controllers
                 return Unauthorized(resultado.Message);
             }
         }
+        #endregion
 
+        #region Read
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -60,7 +65,9 @@ namespace SNS.Controllers
             if (pageSize <= 0 || pageSize <= 0) return BadRequest();
             return Ok(users);
         }
+        #endregion
 
+        #region Update
         [HttpPut("UpdateUser_{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, UtilizadorUpdateDTO userDto)
         {
@@ -70,7 +77,9 @@ namespace SNS.Controllers
             if(result.IsSuccess == true) return Ok(result);
             return NotFound(result.Message);
         }
+        #endregion
 
+        #region Delete
         [HttpDelete("DeleteUser_{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
@@ -79,5 +88,6 @@ namespace SNS.Controllers
             if (result.IsSuccess) return Ok(result);
             return NotFound(result.Message);
         }
+        #endregion
     }
 }
